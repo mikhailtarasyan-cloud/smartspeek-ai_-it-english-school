@@ -1,0 +1,7 @@
+{
+  "name": "SmartSpeek AI: IT English School",
+  "description": "Adaptive AI school for IT/AI professionals. Focused on career growth, technical interviews, and real-world communication with offline-first support.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

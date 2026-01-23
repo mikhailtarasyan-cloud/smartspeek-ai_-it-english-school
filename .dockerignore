@@ -1,0 +1,11 @@
+node_modules
+api/__pycache__
+api/.venv
+api/smartspeek.db
+api/*.db
+.env
+.env.*
+dist
+build
+coverage
+.git
