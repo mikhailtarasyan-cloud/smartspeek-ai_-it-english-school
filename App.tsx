@@ -122,12 +122,50 @@ const App: React.FC = () => {
         password: userData.password,
         avatar: userData.avatar,
       });
-      localStorage.setItem('smartspeek_user_id', result.user_id);
-      setUser({ name: result.name, email: result.email, avatar: userData.avatar });
+      // result: { access_token, token_type, user }
+      apiClient.setToken(result.access_token);
+      setUser({ name: result.user.name, email: result.user.email, avatar: userData.avatar });
       setPhase('onboarding');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration failed', error);
-      alert('Не удалось зарегистрироваться. Проверьте email и пароль.');
+      const status = error?.status;
+      const detail = error?.body?.detail;
+      if (status === 409 || detail === 'USER_ALREADY_EXISTS') {
+        alert('Пользователь с таким email уже существует. Попробуйте войти.');
+      } else if (status === 500) {
+        alert('Сервер недоступен. Попробуйте позже.');
+      } else {
+        alert('Не удалось зарегистрироваться. Проверьте email и пароль.');
+      }
+    }
+  };
+
+  const handleLogin = async (userData: { email: string; password: string }) => {
+    try {
+      const result = await apiClient.login({
+        email: userData.email,
+        password: userData.password,
+      });
+      // result: { access_token, token_type, user }
+      apiClient.setToken(result.access_token);
+      setUser({ 
+        name: result.user.name, 
+        email: result.user.email, 
+        avatar: (result.user.avatar as 'male' | 'female') || 'male' 
+      });
+      // Проверяем, прошел ли пользователь онбординг (можно проверить через API или сразу перейти в main)
+      setPhase('main');
+    } catch (error: any) {
+      console.error('Login failed', error);
+      const status = error?.status;
+      const detail = error?.body?.detail;
+      if (status === 401 || detail === 'INVALID_CREDENTIALS') {
+        alert('Неверный логин или пароль.');
+      } else if (status === 500) {
+        alert('Сервер недоступен / ошибка сервера.');
+      } else {
+        alert('Не удалось войти. Проверьте email и пароль.');
+      }
     }
   };
 
@@ -335,7 +373,7 @@ const App: React.FC = () => {
   const renderAppContent = () => {
     switch (phase) {
       case 'welcome': return <WelcomeView onStart={handleStartOnboarding} />;
-      case 'auth': return <AuthView onAuth={handleAuth} />;
+      case 'auth': return <AuthView onAuth={handleAuth} onLogin={handleLogin} />;
       case 'onboarding': return <OnboardingSurveyView onComplete={handleOnboardingComplete} />;
       case 'generating': return <GeneratingPlanView />;
       case 'plan-ready': return <PlanReadyView result={onboardingResult} onStart={handleStartFirstLesson} />;

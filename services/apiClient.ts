@@ -1,13 +1,31 @@
 const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || '/api';
 
-const getUserId = () => {
-  return localStorage.getItem('smartspeek_user_id') || 'user_demo';
+let accessToken: string | null = null;
+
+const getStoredToken = () => {
+  if (accessToken) return accessToken;
+  const stored = localStorage.getItem('smartspeek_token');
+  if (stored) accessToken = stored;
+  return accessToken;
+};
+
+const setStoredToken = (token: string | null) => {
+  accessToken = token;
+  if (token) {
+    localStorage.setItem('smartspeek_token', token);
+  } else {
+    localStorage.removeItem('smartspeek_token');
+  }
 };
 
 const request = async (path: string, options: RequestInit = {}) => {
   const headers = new Headers(options.headers);
   headers.set('Content-Type', 'application/json');
-  headers.set('X-User-Id', getUserId());
+
+  const token = getStoredToken();
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
 
   const response = await fetch(`${API_BASE}${path}`, {
     ...options,
@@ -15,13 +33,24 @@ const request = async (path: string, options: RequestInit = {}) => {
   });
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
+    let body: any = null;
+    try {
+      body = await response.json();
+    } catch {
+      body = null;
+    }
+    const error: any = new Error('API request failed');
+    error.status = response.status;
+    error.body = body;
+    throw error;
   }
 
   return response.json();
 };
 
 export const apiClient = {
+  setToken: setStoredToken,
+  getToken: getStoredToken,
   register: (payload: { email: string; password: string; name: string; avatar?: string }) =>
     request('/auth/register', {
       method: 'POST',

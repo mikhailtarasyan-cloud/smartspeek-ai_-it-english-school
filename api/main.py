@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import Base, engine
-from app.routers import courses, dashboard, progress, orchestrator, telegram, auth
+from app.routers import courses, dashboard, progress, orchestrator, telegram, auth, ai
 
 app = FastAPI(title="SmartSpeek API", version="0.1.0")
 
@@ -20,6 +20,7 @@ app.include_router(dashboard.router, prefix="/api", tags=["dashboard"])
 app.include_router(orchestrator.router, prefix="/api", tags=["orchestrator"])
 app.include_router(telegram.router, prefix="/api", tags=["telegram"])
 app.include_router(auth.router, prefix="/api", tags=["auth"])
+app.include_router(ai.router, prefix="/api", tags=["ai"])
 
 @app.on_event("startup")
 def ensure_sqlite_tables():

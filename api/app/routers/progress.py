@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import Course, Lesson, LessonAttempt, Achievement, UserAchievement
+from app.models import Course, Lesson, LessonAttempt, Achievement, UserAchievement, User
 from app.schemas import ProgressOut, CourseOut, AchievementOut
-from app.routers.common import get_user_id, ensure_user
+from app.routers.common import ensure_user
+from app.security import get_current_user
 
 router = APIRouter()
 
@@ -57,7 +58,8 @@ def _achievement_list(db: Session, user_id: str) -> list[AchievementOut]:
 
 
 @router.get("/progress", response_model=ProgressOut)
-def get_progress(db: Session = Depends(get_db), user_id: str = Depends(get_user_id)):
+def get_progress(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    user_id = current_user.id
     ensure_user(db, user_id)
     courses = db.query(Course).filter(Course.is_active.is_(True)).order_by(Course.title).all()
     course_out = [_course_progress(db, user_id, course) for course in courses]

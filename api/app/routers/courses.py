@@ -5,9 +5,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import Course, Lesson, LessonAttempt, Achievement, UserAchievement
+from app.models import Course, Lesson, LessonAttempt, Achievement, UserAchievement, User
 from app.schemas import CourseOut, LessonOut, LessonAttemptIn, LessonAttemptOut, QuestionOut
-from app.routers.common import get_user_id, ensure_user
+from app.routers.common import ensure_user
+from app.security import get_current_user
 
 router = APIRouter()
 
@@ -82,7 +83,8 @@ def _unlock_achievements(db: Session, user_id: str, lesson_id: str) -> None:
 
 
 @router.get("/courses", response_model=list[CourseOut])
-def list_courses(db: Session = Depends(get_db), user_id: str = Depends(get_user_id)):
+def list_courses(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    user_id = current_user.id
     ensure_user(db, user_id)
     courses = db.query(Course).filter(Course.is_active.is_(True)).order_by(Course.title).all()
     result = []
@@ -105,7 +107,12 @@ def list_courses(db: Session = Depends(get_db), user_id: str = Depends(get_user_
 
 
 @router.get("/courses/{course_id}/lessons", response_model=list[LessonOut])
-def list_lessons(course_id: str, db: Session = Depends(get_db), user_id: str = Depends(get_user_id)):
+def list_lessons(
+    course_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    user_id = current_user.id
     ensure_user(db, user_id)
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
@@ -122,7 +129,12 @@ def list_lessons(course_id: str, db: Session = Depends(get_db), user_id: str = D
 
 
 @router.get("/lessons/{lesson_id}", response_model=LessonOut)
-def get_lesson(lesson_id: str, db: Session = Depends(get_db), user_id: str = Depends(get_user_id)):
+def get_lesson(
+    lesson_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    user_id = current_user.id
     ensure_user(db, user_id)
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:
@@ -167,8 +179,9 @@ def submit_attempt(
     lesson_id: str,
     payload: LessonAttemptIn,
     db: Session = Depends(get_db),
-    user_id: str = Depends(get_user_id),
+    current_user: User = Depends(get_current_user),
 ):
+    user_id = current_user.id
     ensure_user(db, user_id)
     lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
     if not lesson:

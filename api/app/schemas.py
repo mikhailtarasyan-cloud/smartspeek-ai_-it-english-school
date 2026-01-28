@@ -67,11 +67,22 @@ class LoginRequest(BaseModel):
     password: str
 
 
-class AuthResponse(BaseModel):
-    user_id: str
+class UserOut(BaseModel):
+    id: str
     email: EmailStr
     name: str
     avatar: str | None = None
+
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: Literal["bearer"]
+    user: UserOut
+
+
+class ErrorResponse(BaseModel):
+    detail: str
+    message: str
 
 
 class QuestionOut(BaseModel):

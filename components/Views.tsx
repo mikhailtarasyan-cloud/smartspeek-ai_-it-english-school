@@ -44,52 +44,83 @@ export const WelcomeView: React.FC<{ onStart: () => void }> = ({ onStart }) => (
   </div>
 );
 
-// --- Auth / Registration ---
+// --- Auth / Registration / Login ---
 
-export const AuthView: React.FC<{ onAuth: (user: { name: string; email: string; password: string; avatar: 'male' | 'female' }) => void }> = ({ onAuth }) => {
+export const AuthView: React.FC<{ 
+  onAuth: (user: { name: string; email: string; password: string; avatar: 'male' | 'female' }) => void;
+  onLogin: (user: { email: string; password: string }) => void;
+}> = ({ onAuth, onLogin }) => {
+  const [isLogin, setIsLogin] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [avatar, setAvatar] = useState<'male' | 'female'>('male');
 
+  const handleSubmit = () => {
+    if (isLogin) {
+      onLogin({ email, password });
+    } else {
+      onAuth({ name, email, password, avatar });
+    }
+  };
+
+  const isFormValid = isLogin 
+    ? email.trim() && password.length >= 6
+    : name.trim() && email.trim() && password.length >= 6 && acceptedTerms;
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 animate-in zoom-in duration-500 bg-slate-50">
       <div className="bg-white p-10 md:p-14 rounded-[3.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border border-slate-100 w-full max-w-lg">
         <div className="space-y-10">
-          {/* Avatar Selection Area */}
-          <div className="flex gap-10 justify-center items-end pb-4">
-             <div className="flex flex-col items-center gap-4">
-               <button 
-                onClick={() => setAvatar('male')}
-                className={`w-28 h-28 rounded-full border-4 transition-all flex items-center justify-center ${avatar === 'male' ? 'border-blue-600 bg-blue-50 shadow-xl scale-110' : 'border-slate-200 bg-slate-50 opacity-60 hover:opacity-100'}`}
-               >
-                  <i className={`fa-solid fa-user text-4xl ${avatar === 'male' ? 'text-blue-600' : 'text-slate-400'}`}></i>
-               </button>
-               <span className={`text-[10px] font-black tracking-[0.2em] transition-colors ${avatar === 'male' ? 'text-blue-600' : 'text-slate-400'}`}>МУЖЧИНА</span>
-             </div>
-             
-             <div className="flex flex-col items-center gap-4">
-               <button 
-                onClick={() => setAvatar('female')}
-                className={`w-28 h-28 rounded-full border-4 transition-all flex items-center justify-center ${avatar === 'female' ? 'border-blue-600 bg-blue-50 shadow-xl scale-110' : 'border-slate-200 bg-slate-50 opacity-60 hover:opacity-100'}`}
-               >
-                  <i className={`fa-solid fa-user text-4xl ${avatar === 'female' ? 'text-blue-600' : 'text-slate-400'}`}></i>
-               </button>
-               <span className={`text-[10px] font-black tracking-[0.2em] transition-colors ${avatar === 'female' ? 'text-blue-600' : 'text-slate-400'}`}>ЖЕНЩИНА</span>
-             </div>
+          {/* Header */}
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2 tracking-tight">
+              {isLogin ? 'Вход в аккаунт' : 'Создание аккаунта'}
+            </h2>
+            <p className="text-slate-500 font-bold text-sm">
+              {isLogin ? 'Войдите, чтобы продолжить обучение' : 'Начните свой путь к IT-английскому'}
+            </p>
           </div>
 
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] block ml-1">КАК К ВАМ ОБРАЩАТЬСЯ?</label>
-            <input 
-              type="text" 
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-5 text-lg font-bold focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-300 shadow-inner"
-              placeholder="Ваше имя"
-            />
-          </div>
+          {/* Avatar Selection Area - только для регистрации */}
+          {!isLogin && (
+            <div className="flex gap-10 justify-center items-end pb-4">
+               <div className="flex flex-col items-center gap-4">
+                 <button 
+                  onClick={() => setAvatar('male')}
+                  className={`w-28 h-28 rounded-full border-4 transition-all flex items-center justify-center ${avatar === 'male' ? 'border-blue-600 bg-blue-50 shadow-xl scale-110' : 'border-slate-200 bg-slate-50 opacity-60 hover:opacity-100'}`}
+                 >
+                    <i className={`fa-solid fa-user text-4xl ${avatar === 'male' ? 'text-blue-600' : 'text-slate-400'}`}></i>
+                 </button>
+                 <span className={`text-[10px] font-black tracking-[0.2em] transition-colors ${avatar === 'male' ? 'text-blue-600' : 'text-slate-400'}`}>МУЖЧИНА</span>
+               </div>
+               
+               <div className="flex flex-col items-center gap-4">
+                 <button 
+                  onClick={() => setAvatar('female')}
+                  className={`w-28 h-28 rounded-full border-4 transition-all flex items-center justify-center ${avatar === 'female' ? 'border-blue-600 bg-blue-50 shadow-xl scale-110' : 'border-slate-200 bg-slate-50 opacity-60 hover:opacity-100'}`}
+                 >
+                    <i className={`fa-solid fa-user text-4xl ${avatar === 'female' ? 'text-blue-600' : 'text-slate-400'}`}></i>
+                 </button>
+                 <span className={`text-[10px] font-black tracking-[0.2em] transition-colors ${avatar === 'female' ? 'text-blue-600' : 'text-slate-400'}`}>ЖЕНЩИНА</span>
+               </div>
+            </div>
+          )}
+
+          {/* Name field - только для регистрации */}
+          {!isLogin && (
+            <div className="space-y-4">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] block ml-1">КАК К ВАМ ОБРАЩАТЬСЯ?</label>
+              <input 
+                type="text" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-5 text-lg font-bold focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-300 shadow-inner"
+                placeholder="Ваше имя"
+              />
+            </div>
+          )}
           
           <div className="space-y-4">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] block ml-1">EMAIL</label>
@@ -109,45 +140,71 @@ export const AuthView: React.FC<{ onAuth: (user: { name: string; email: string; 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-5 text-lg font-bold focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-300 shadow-inner"
-              placeholder="Минимум 6 символов"
+              placeholder={isLogin ? "Ваш пароль" : "Минимум 6 символов"}
             />
           </div>
 
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center block">ВХОД ЧЕРЕЗ СОЦСЕТИ</label>
-            <div className="grid grid-cols-2 gap-4">
-               <button className="flex items-center justify-center gap-3 py-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm active:scale-95">
-                  <i className="fa-brands fa-google text-red-500 text-lg"></i> Google
-               </button>
-               <button className="flex items-center justify-center gap-3 py-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm active:scale-95">
-                  <i className="fa-solid fa-phone text-blue-500 text-lg"></i> Телефон
-               </button>
+          {/* Social login - только для регистрации */}
+          {!isLogin && (
+            <div className="space-y-4">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center block">ВХОД ЧЕРЕЗ СОЦСЕТИ</label>
+              <div className="grid grid-cols-2 gap-4">
+                 <button className="flex items-center justify-center gap-3 py-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm active:scale-95">
+                    <i className="fa-brands fa-google text-red-500 text-lg"></i> Google
+                 </button>
+                 <button className="flex items-center justify-center gap-3 py-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest shadow-sm active:scale-95">
+                    <i className="fa-solid fa-phone text-blue-500 text-lg"></i> Телефон
+                 </button>
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex gap-4">
-            <div className="relative shrink-0 pt-0.5">
-              <input 
-                type="checkbox" 
-                id="terms"
-                checked={acceptedTerms}
-                onChange={(e) => setAcceptedTerms(e.target.checked)}
-                className="w-6 h-6 rounded-lg border-2 border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer appearance-none checked:bg-blue-600 checked:border-blue-600 transition-all"
-              />
-              {acceptedTerms && <i className="fa-solid fa-check absolute inset-0 flex items-center justify-center text-white text-[10px] pointer-events-none"></i>}
+          {/* Terms checkbox - только для регистрации */}
+          {!isLogin && (
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex gap-4">
+              <div className="relative shrink-0 pt-0.5">
+                <input 
+                  type="checkbox" 
+                  id="terms"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  className="w-6 h-6 rounded-lg border-2 border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer appearance-none checked:bg-blue-600 checked:border-blue-600 transition-all"
+                />
+                {acceptedTerms && <i className="fa-solid fa-check absolute inset-0 flex items-center justify-center text-white text-[10px] pointer-events-none"></i>}
+              </div>
+              <label htmlFor="terms" className="text-[11px] text-slate-500 leading-relaxed cursor-pointer font-medium">
+                Я принимаю <span className="text-blue-600 font-bold">Условия использования</span> и <span className="text-blue-600 font-bold">Политику конфиденциальности</span> SmartSpeek AI.
+              </label>
             </div>
-            <label htmlFor="terms" className="text-[11px] text-slate-500 leading-relaxed cursor-pointer font-medium">
-              Я принимаю <span className="text-blue-600 font-bold">Условия использования</span> и <span className="text-blue-600 font-bold">Политику конфиденциальности</span> SmartSpeek AI.
-            </label>
-          </div>
+          )}
 
           <button 
-            onClick={() => onAuth({ name, email, password, avatar })}
-            disabled={!name.trim() || !email.trim() || password.length < 6 || !acceptedTerms}
+            onClick={handleSubmit}
+            disabled={!isFormValid}
             className="w-full py-6 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-blue-700 disabled:opacity-50 disabled:scale-100 transition-all shadow-xl shadow-blue-600/30 active:scale-95"
           >
-            Создать аккаунт
+            {isLogin ? 'Войти' : 'Создать аккаунт'}
           </button>
+
+          {/* Toggle between login and register */}
+          <div className="text-center pt-4 border-t border-slate-100">
+            <button
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setName('');
+                setEmail('');
+                setPassword('');
+                setAcceptedTerms(false);
+              }}
+              className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors"
+            >
+              {isLogin ? (
+                <>Нет аккаунта? <span className="text-blue-600">Зарегистрироваться</span></>
+              ) : (
+                <>Уже есть аккаунт? <span className="text-blue-600">Войти</span></>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>
