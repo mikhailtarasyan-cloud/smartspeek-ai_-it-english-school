@@ -71,4 +71,40 @@ export const apiClient = {
     }),
   getDashboard: () => request('/dashboard'),
   getProgress: () => request('/progress'),
+  getTrueFalseTopics: () => request('/minigames/truefalse/topics'),
+  startTrueFalseSession: (payload: { topic_id: string; n_questions?: number; resume?: boolean }) =>
+    request('/minigames/truefalse/sessions', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  getTrueFalseSession: (sessionId: string) => request(`/minigames/truefalse/sessions/${sessionId}`),
+  answerTrueFalse: (sessionId: string, payload: { question_id: string; user_answer: boolean; response_time_ms?: number }) =>
+    request(`/minigames/truefalse/sessions/${sessionId}/answer`, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  nextTrueFalse: (sessionId: string) => request(`/minigames/truefalse/sessions/${sessionId}/next`),
+  restartTrueFalse: (sessionId: string) => request(`/minigames/truefalse/sessions/${sessionId}/restart`, { method: 'POST' }),
+  getLearningPlanCurrent: () => request('/learning-plan/current'),
+  generateLearningPlan: (payload: {
+    plan_length: 7 | 21;
+    cefr_level: string;
+    goals: string[];
+    free_text_goal?: string;
+    role?: string;
+    interests: string[];
+    weak_terms?: string[];
+    weak_skills?: string[];
+  }) =>
+    request('/learning-plan/generate', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  getLearningPlanLesson: (planId: string, lessonIndex: number) =>
+    request(`/learning-plan/${planId}/lessons/${lessonIndex}`),
+  completeLearningPlanLesson: (planId: string, lessonIndex: number, payload?: { score?: number }) =>
+    request(`/learning-plan/${planId}/lessons/${lessonIndex}/complete`, {
+      method: 'POST',
+      body: JSON.stringify(payload || {}),
+    }),
 };

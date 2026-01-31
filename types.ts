@@ -11,6 +11,10 @@ export interface OnboardingData {
   english_level: string;
   goals: string[];
   work_tasks: string[];
+  english_use_frequency: string;
+  target_level: string;
+  goal_timeframe: string;
+  goal_focus: string;
   tech_vocab_level: string;
   speaking_issue: string;
   grammar_attitude: string;
@@ -39,7 +43,23 @@ export interface LearningGoal extends OnboardingData {
 export interface LearningStep {
   id: string;
   title: string;
-  type: 'speaking' | 'listening' | 'grammar' | 'reading' | 'writing' | 'diagnostic' | 'dialogue' | 'quiz';
+  type:
+    | 'speaking'
+    | 'listening'
+    | 'grammar'
+    | 'reading'
+    | 'writing'
+    | 'diagnostic'
+    | 'dialogue'
+    | 'quiz'
+    | 'mcq'
+    | 'fill_gap'
+    | 'choose_best_phrase'
+    | 'true_false'
+    | 'short_answer'
+    | 'rewrite'
+    | 'scenario'
+    | 'justify';
   status: 'pending' | 'completed' | 'current';
   content?: string;
   correction?: string;
@@ -87,6 +107,29 @@ export interface LearningPlan {
   duration_days: number;
   schedule: DayPlan[];
   rationale: string;
+}
+
+export interface LearningPlanLessonSummary {
+  lesson_index: number;
+  title: string;
+  status: 'locked' | 'open' | 'done';
+  lesson_payload?: any;
+}
+
+export interface LearningPlanProgress {
+  done: number;
+  total: number;
+}
+
+export interface LearningPlanCurrent {
+  plan_id: string;
+  plan_length: number;
+  cefr_level: string;
+  persona?: any;
+  progress: LearningPlanProgress;
+  lessons: LearningPlanLessonSummary[];
+  version: number;
+  status: 'active' | 'archived';
 }
 
 export interface SessionAttempt {
@@ -142,6 +185,49 @@ export interface AITerm {
   term: string;
   definition: string;
   icon: string;
+}
+
+export interface GlossaryTopic {
+  id: string;
+  slug: string;
+  title: string;
+  description?: string | null;
+  skill_tag?: string | null;
+}
+
+export interface GameQuestion {
+  id: string;
+  term: string;
+  shown_definition: string;
+  explanation: string;
+  icon_key?: string | null;
+  order_index: number;
+}
+
+export interface GameSession {
+  id: string;
+  topic_id: string;
+  status: 'active' | 'finished' | 'abandoned';
+  n_questions: number;
+  current_index: number;
+  score_total: number;
+  correct_count: number;
+  wrong_count: number;
+  streak_current: number;
+  streak_max: number;
+  attempt_no: number;
+  current_question?: GameQuestion | null;
+}
+
+export interface GameAnswerResult {
+  is_correct: boolean;
+  score_delta: number;
+  score_total: number;
+  streak_current: number;
+  streak_max: number;
+  multiplier: number;
+  explanation: string;
+  correct_answer: boolean;
 }
 
 export interface OrchestratorTask {

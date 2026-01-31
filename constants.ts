@@ -1,5 +1,6 @@
 
 import { Course, UpcomingLesson, SkillNode, Achievement, AITerm, DiagnosticStep, LearningPlan } from './types';
+import AI_IT_TERMS from './data/ai_it_terms.json';
 
 export const COLORS = {
   primary: '#2563EB',
@@ -43,12 +44,13 @@ export const ONBOARDING_QUESTIONS = [
     type: 'single_select',
     title: 'Уровень английского',
     question: 'Ваш текущий уровень английского?',
+    helper: 'A1 — начинающий (база) · A2 — элементарный · B1 — средний · B2 — уверенный · C1 — продвинутый',
     options: [
-      { value: "A1", label: "A1 (Beginner)" },
-      { value: "A2", label: "A2 (Elementary)" },
-      { value: "B1", label: "B1 (Intermediate)" },
-      { value: "B2", label: "B2 (Upper Intermediate)" },
-      { value: "C1", label: "C1 (Advanced)" }
+      { value: "A1", label: "A1 — Начинающий" },
+      { value: "A2", label: "A2 — Элементарный" },
+      { value: "B1", label: "B1 — Средний" },
+      { value: "B2", label: "B2 — Уверенный" },
+      { value: "C1", label: "C1 — Продвинутый" }
     ]
   },
   {
@@ -77,7 +79,55 @@ export const ONBOARDING_QUESTIONS = [
       { value: "meetings", label: "Митинги / Созвоны" },
       { value: "presentations", label: "Презентации" },
       { value: "technical_discussions", label: "Технические дискуссии" },
-      { value: "code_review", label: "Code Review" }
+      { value: "code_review", label: "Код-ревью" }
+    ]
+  },
+  {
+    id: 'english_use_frequency',
+    type: 'single_select',
+    title: 'Как часто используете английский?',
+    question: 'Как часто вы реально используете английский в работе?',
+    options: [
+      { value: "daily", label: "Каждый день" },
+      { value: "weekly", label: "Несколько раз в неделю" },
+      { value: "monthly", label: "Несколько раз в месяц" },
+      { value: "rarely", label: "Редко" }
+    ]
+  },
+  {
+    id: 'target_level',
+    type: 'single_select',
+    title: 'Желаемый уровень',
+    question: 'До какого уровня вы хотите дойти?',
+    options: [
+      { value: "A2", label: "A2" },
+      { value: "B1", label: "B1" },
+      { value: "B2", label: "B2" },
+      { value: "C1", label: "C1" }
+    ]
+  },
+  {
+    id: 'goal_timeframe',
+    type: 'single_select',
+    title: 'Срок цели',
+    question: 'За какой срок хотите достичь результата?',
+    options: [
+      { value: "1-2_months", label: "1–2 месяца" },
+      { value: "3-4_months", label: "3–4 месяца" },
+      { value: "6_months", label: "6 месяцев" },
+      { value: "1_year", label: "1 год" }
+    ]
+  },
+  {
+    id: 'goal_focus',
+    type: 'single_select',
+    title: 'Главный фокус',
+    question: 'Какой главный результат важнее всего?',
+    options: [
+      { value: "speaking", label: "Говорить уверенно" },
+      { value: "meetings", label: "Митинги и созвоны" },
+      { value: "interview", label: "Собеседование" },
+      { value: "writing", label: "Письмо и документация" }
     ]
   },
   {
@@ -343,7 +393,4 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'a23', tier: 7, title: 'AI English Operator', description: 'Полная автономность.', icon: 'fa-user-check', status: 'locked', type: 'skill' },
 ];
 
-export const AI_TERMINOLOGY: AITerm[] = [
-  { term: "RAG", definition: "Retrieval-Augmented Generation — поиск данных в ваших документах для точных ответов ИИ.", icon: "fa-database" },
-  { term: "CEFR", definition: "Общеевропейская шкала языковой компетенции (A1-C2).", icon: "fa-chart-simple" },
-];
+export const AI_TERMINOLOGY: AITerm[] = AI_IT_TERMS as AITerm[];

@@ -27,16 +27,37 @@ export const evaluateDiagnosticResponse = async (stepType: string, question: str
 };
 
 export const processOnboarding = async (onboardingData: OnboardingData) => {
-  const response = await fetch('/api/ai/process-onboarding', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ onboarding: onboardingData }),
-  });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(`Не удалось сгенерировать план: ${JSON.stringify(err)}`);
+  try {
+    const response = await fetch('/api/ai/process-onboarding', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ onboarding: onboardingData }),
+    });
+    
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(`Не удалось сгенерировать план: ${err.detail || JSON.stringify(err)}`);
+    }
+    
+    const data = await response.json();
+    // Backend теперь возвращает { text, status } вместо { raw }
+    if (data.text && data.status === 'success') {
+      // Пытаемся распарсить JSON из текста, если это JSON
+      try {
+        return JSON.parse(data.text);
+      } catch {
+        // Если не JSON, возвращаем как есть (текст)
+        return { plan: data.text, raw_text: data.text };
+      }
+    }
+    throw new Error('Пустой ответ от сервера');
+  } catch (error: any) {
+    // Улучшенная обработка ошибок сети
+    if (error.message?.includes('Failed to fetch') || error.name === 'TypeError') {
+      throw new Error('Не удалось подключиться к серверу. Убедитесь, что backend запущен на http://localhost:8000');
+    }
+    throw error;
   }
-  return response.json();
 };
 
 export const generateLearningPlan = async (goals: any, diagnosticResults: any) => {
@@ -46,16 +67,34 @@ export const generateLearningPlan = async (goals: any, diagnosticResults: any) =
 };
 
 export const getTutorInsights = async (prompt: string) => {
-  const response = await fetch('/api/ai/tutor-insights', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
-  });
-  if (!response.ok) {
-    console.warn('Ошибка получения AI советов');
+  try {
+    const response = await fetch('/api/ai/tutor-insights', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    if (!response.ok) {
+      console.warn('Ошибка получения AI советов:', response.status);
+      return [];
+    }
+    const data = await response.json();
+    // Backend теперь возвращает { text, status } вместо { raw }
+    if (data.text && data.status === 'success') {
+      // Парсим текст ответа - ожидаем список советов
+      // Gemini возвращает текст, который нужно разбить на массив
+      const text = data.text.trim();
+      if (text) {
+        // Разбиваем по строкам или маркерам списка
+      const lines = text
+        .split(/\n+/)
+        .map(line => line.trim())
+        .filter(line => line.length > 0 && line !== '---');
+        return lines.length > 0 ? lines : [text];
+      }
+    }
+    return [];
+  } catch (error: any) {
+    console.warn('Ошибка получения AI советов:', error.message);
     return [];
   }
-  const data = await response.json();
-  // backend сейчас возвращает { raw }, можно адаптировать позже
-  return data.raw || [];
 };

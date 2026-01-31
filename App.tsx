@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Sidebar, { ViewType } from './components/Sidebar';
 import CourseCard from './components/CourseCard';
 import AchievementBadge from './components/AchievementBadge';
-import AITerminology from './components/AITerminology';
 import OrchestratorPanel from './components/OrchestratorPanel';
 import { 
   CoursesView, 
@@ -22,7 +21,7 @@ import {
 import { SAMPLE_PLAN } from './constants';
 import { getTutorInsights, processOnboarding } from './services/gemini';
 import { apiClient } from './services/apiClient';
-import { AIInsight, Achievement, Course, OnboardingData, SkillNode } from './types';
+import { AIInsight, Achievement, Course, LearningPlan, LearningPlanCurrent, OnboardingData, SkillNode } from './types';
 
 type AppPhase = 'welcome' | 'auth' | 'onboarding' | 'generating' | 'plan-ready' | 'main';
 
@@ -40,6 +39,14 @@ const App: React.FC = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [skillTree, setSkillTree] = useState<SkillNode | null>(null);
   const [dashboardStats, setDashboardStats] = useState({ active_courses: 0, words_learned: 0, level: 'B1' });
+  const [learningPlan, setLearningPlan] = useState<LearningPlan>(SAMPLE_PLAN);
+  const [currentPlanMeta, setCurrentPlanMeta] = useState<LearningPlanCurrent | null>(null);
+  const [onboardingInput, setOnboardingInput] = useState<OnboardingData | null>(null);
+  const [isPlanGenerating, setIsPlanGenerating] = useState(false);
+  const [planError, setPlanError] = useState<string | null>(null);
+  const [autoPlanTriggered, setAutoPlanTriggered] = useState(false);
+  const [autoPlanSummary, setAutoPlanSummary] = useState<string | null>(null);
+  const [manualPlanSummary, setManualPlanSummary] = useState<string | null>(null);
 
   // Persistence: Hydrate state from localStorage on mount
   useEffect(() => {
@@ -47,9 +54,17 @@ const App: React.FC = () => {
     const savedResult = localStorage.getItem('smartspeek_onboarding');
     const savedPhase = localStorage.getItem('smartspeek_phase');
     const savedUserId = localStorage.getItem('smartspeek_user_id');
+    const savedOnboardingInput = localStorage.getItem('smartspeek_onboarding_input');
+    const savedPlan = localStorage.getItem('smartspeek_learning_plan');
+    const savedAutoSummary = localStorage.getItem('smartspeek_auto_plan_summary');
+    const savedManualSummary = localStorage.getItem('smartspeek_manual_plan_summary');
     
     if (savedUser) setUser(JSON.parse(savedUser));
     if (savedResult) setOnboardingResult(JSON.parse(savedResult));
+    if (savedOnboardingInput) setOnboardingInput(JSON.parse(savedOnboardingInput));
+    if (savedPlan) setLearningPlan(JSON.parse(savedPlan));
+    if (savedAutoSummary) setAutoPlanSummary(savedAutoSummary);
+    if (savedManualSummary) setManualPlanSummary(savedManualSummary);
     if (!savedUserId) localStorage.setItem('smartspeek_user_id', 'user_demo');
     
     if (savedPhase && savedPhase !== 'diagnostic' && savedPhase !== 'results') {
@@ -73,8 +88,102 @@ const App: React.FC = () => {
   useEffect(() => {
     if (user) localStorage.setItem('smartspeek_user', JSON.stringify(user));
     if (onboardingResult) localStorage.setItem('smartspeek_onboarding', JSON.stringify(onboardingResult));
+    if (onboardingInput) localStorage.setItem('smartspeek_onboarding_input', JSON.stringify(onboardingInput));
+    if (learningPlan) localStorage.setItem('smartspeek_learning_plan', JSON.stringify(learningPlan));
+    if (autoPlanSummary) localStorage.setItem('smartspeek_auto_plan_summary', autoPlanSummary);
+    if (manualPlanSummary) localStorage.setItem('smartspeek_manual_plan_summary', manualPlanSummary);
     localStorage.setItem('smartspeek_phase', phase);
-  }, [user, onboardingResult, phase]);
+  }, [user, onboardingResult, onboardingInput, learningPlan, autoPlanSummary, manualPlanSummary, phase]);
+
+  const buildPlanFromGoals = (data: OnboardingData): LearningPlan => {
+    const goalLabels: Record<string, string> = {
+      career_growth: 'Карьерный рост',
+      job_interview: 'Собеседование',
+      international_team: 'Международная команда',
+      freelance_clients: 'Фриланс/Клиенты',
+      relocation: 'Релокация',
+      startup: 'Стартап',
+    };
+
+    const taskLabels: Record<string, string> = {
+      documentation: 'Документация',
+      chat_communication: 'Переписка в чатах',
+      meetings: 'Митинги',
+      presentations: 'Презентации',
+      technical_discussions: 'Технические дискуссии',
+      code_review: 'Code Review',
+    };
+
+    const goals = (data.goals || []).map((g) => goalLabels[g] || g);
+    const tasks = (data.work_tasks || []).map((t) => taskLabels[t] || t);
+    const themes = [...goals, ...tasks, data.role].filter(Boolean);
+
+    const getTheme = (index: number) =>
+      themes[index % themes.length] || 'IT-коммуникация';
+
+    const schedule = Array.from({ length: 7 }, (_, i) => {
+      const day = i + 1;
+      const theme = getTheme(i);
+      return {
+        day,
+        title: `${theme} — день ${day}`,
+        steps: [
+          { id: `d${day}s1`, title: `Vocab: ключевые термины — ${theme}`, type: 'reading', status: day === 1 ? 'current' : 'pending' },
+          { id: `d${day}s2`, title: `Grammar: структура для ${theme}`, type: 'grammar', status: 'pending' },
+          { id: `d${day}s3`, title: `Practice: короткая практика по теме "${theme}"`, type: 'speaking', status: 'pending' },
+        ],
+      };
+    });
+
+    return {
+      id: `lp_${Date.now()}`,
+      goal_id: goals[0] || 'custom',
+      duration_days: 7,
+      rationale: 'План построен на ваших целях из онбординга.',
+      schedule,
+    };
+  };
+
+  const goalLabelMap: Record<string, string> = {
+    career_growth: 'Карьерный рост',
+    job_interview: 'Собеседование',
+    international_team: 'Международная команда',
+    freelance_clients: 'Фриланс / Клиенты',
+    relocation: 'Релокация',
+    startup: 'Стартап',
+    daily_standup: 'Стендапы',
+    incident_updates: 'Инциденты',
+    emails: 'Письма',
+    meetings: 'Митинги',
+    interview: 'Собеседование',
+    presentations: 'Презентации',
+  };
+
+  const buildPlanSummary = (payload: {
+    plan_length: 7 | 21;
+    goals: string[];
+    free_text_goal?: string;
+    role?: string;
+  }) => {
+    const goals = payload.goals.map((g) => goalLabelMap[g] || g).filter(Boolean);
+    const goalText = goals.length ? goals.join(', ') : 'Без указанных целей';
+    const freeText = payload.free_text_goal ? ` / ${payload.free_text_goal}` : '';
+    const role = payload.role ? ` / Роль: ${payload.role}` : '';
+    return `Длина: ${payload.plan_length} уроков • Цели: ${goalText}${freeText}${role}`;
+  };
+
+  const normalizePlan = (result: any, data: OnboardingData | null): LearningPlan | null => {
+    if (result && Array.isArray(result.schedule)) {
+      return {
+        id: result.id || `lp_${Date.now()}`,
+        goal_id: result.goal_id || (data?.goals?.[0] || 'custom'),
+        duration_days: result.duration_days || 7,
+        rationale: result.rationale || 'План построен на ваших целях из онбординга.',
+        schedule: result.schedule,
+      };
+    }
+    return data ? buildPlanFromGoals(data) : null;
+  };
 
   const fetchInsights = useCallback(async () => {
     if (!navigator.onLine) return; 
@@ -109,8 +218,43 @@ const App: React.FC = () => {
     if (phase === 'main') {
       fetchInsights();
       fetchDashboard();
+      loadCurrentPlan();
     }
   }, [phase, fetchInsights, fetchDashboard]);
+
+  useEffect(() => {
+    if (phase !== 'main') return;
+    if (autoPlanTriggered) return;
+    if (!onboardingInput) return;
+    if (currentPlanMeta) return;
+
+    setAutoPlanTriggered(true);
+    const freeText = onboardingInput.goal_focus || onboardingInput.success_criteria || undefined;
+    handleGeneratePlan({
+      plan_length: 7,
+      goals: onboardingInput.goals || [],
+      free_text_goal: freeText,
+      role: onboardingInput.role,
+      interests: onboardingInput.work_tasks || [],
+    }, 'auto');
+  }, [phase, onboardingInput, currentPlanMeta, autoPlanTriggered]);
+
+  useEffect(() => {
+    if (phase !== 'main') return;
+    if (autoPlanTriggered) return;
+    if (!onboardingInput) return;
+    if (currentPlanMeta) return;
+
+    setAutoPlanTriggered(true);
+    const freeText = onboardingInput.goal_focus || onboardingInput.success_criteria || undefined;
+    handleGeneratePlan({
+      plan_length: 7,
+      goals: onboardingInput.goals || [],
+      free_text_goal: freeText,
+      role: onboardingInput.role,
+      interests: onboardingInput.work_tasks || [],
+    });
+  }, [phase, onboardingInput, currentPlanMeta, autoPlanTriggered]);
 
   const handleStartOnboarding = () => setPhase('auth');
   
@@ -125,6 +269,7 @@ const App: React.FC = () => {
       // result: { access_token, token_type, user }
       apiClient.setToken(result.access_token);
       setUser({ name: result.user.name, email: result.user.email, avatar: userData.avatar });
+      // Возвращаем стандартный поток: после регистрации -> онбординг
       setPhase('onboarding');
     } catch (error: any) {
       console.error('Registration failed', error);
@@ -153,8 +298,9 @@ const App: React.FC = () => {
         email: result.user.email, 
         avatar: (result.user.avatar as 'male' | 'female') || 'male' 
       });
-      // Проверяем, прошел ли пользователь онбординг (можно проверить через API или сразу перейти в main)
-      setPhase('main');
+      // Если онбординг уже есть в localStorage - сразу в main, иначе на онбординг
+      const savedResult = localStorage.getItem('smartspeek_onboarding');
+      setPhase(savedResult ? 'main' : 'onboarding');
     } catch (error: any) {
       console.error('Login failed', error);
       const status = error?.status;
@@ -176,8 +322,11 @@ const App: React.FC = () => {
     }
     setPhase('generating');
     try {
+      setOnboardingInput(data);
       const result = await processOnboarding(data);
       setOnboardingResult(result);
+      const normalized = normalizePlan(result, data);
+      if (normalized) setLearningPlan(normalized);
       setPhase('plan-ready');
     } catch (error) {
       console.error("Onboarding failed", error);
@@ -189,6 +338,113 @@ const App: React.FC = () => {
 
   const handleStartFirstLesson = () => setPhase('main');
   const handleStartDaily = () => setCurrentView('daily-session');
+
+  const planFromCurrent = (current: LearningPlanCurrent): LearningPlan => {
+    const schedule = current.lessons.map((lesson) => {
+      const activities = lesson.lesson_payload?.activities || [];
+      const steps = activities.length
+        ? activities.map((activity: any, idx: number) => ({
+            id: `lp_${lesson.lesson_index}_act_${idx + 1}`,
+            title: activity.prompt || activity.type || `Активность ${idx + 1}`,
+            type: (activity.type as any) || 'quiz',
+            status: lesson.status === 'done' ? 'completed' : lesson.status === 'open' ? 'current' : 'pending',
+            content: activity.prompt || '',
+            explanation: activity.explanation_simple || '',
+          }))
+        : [
+            {
+              id: `lp_${lesson.lesson_index}_step`,
+              title: lesson.status === 'done' ? 'Урок завершен' : 'Открыть урок',
+              type: 'quiz',
+              status: lesson.status === 'done' ? 'completed' : lesson.status === 'open' ? 'current' : 'pending',
+            },
+          ];
+
+      return {
+        day: lesson.lesson_index,
+        title: lesson.title,
+        steps,
+      };
+    });
+
+    return {
+      id: current.plan_id,
+      goal_id: current.cefr_level,
+      duration_days: current.plan_length,
+      rationale: 'План построен на ваших целях и уровне.',
+      schedule,
+    };
+  };
+
+  const loadCurrentPlan = async () => {
+    try {
+      const current = await apiClient.getLearningPlanCurrent();
+      setCurrentPlanMeta(current);
+      setLearningPlan(planFromCurrent(current));
+      return current;
+    } catch (error: any) {
+      if (error?.status === 404) {
+        setCurrentPlanMeta(null);
+        return null;
+      } else {
+        console.error('Failed to load current plan', error);
+        return null;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (currentView === 'learning-plan') {
+      loadCurrentPlan();
+    }
+  }, [currentView]);
+
+  const handleGeneratePlan = async (
+    payload: {
+    plan_length: 7 | 21;
+    goals: string[];
+    free_text_goal?: string;
+    role?: string;
+    interests: string[];
+    weak_terms?: string[];
+    weak_skills?: string[];
+    },
+    source: 'auto' | 'manual' = 'manual'
+  ) => {
+    if (!onboardingInput) {
+      // Не блокируем: генерация доступна и без онбординга
+      setOnboardingInput(null);
+    }
+    setIsPlanGenerating(true);
+    setPlanError(null);
+    try {
+      const cefr =
+        onboardingResult?.english_level ||
+        dashboardStats.level ||
+        'B1';
+      await apiClient.generateLearningPlan({
+        plan_length: payload.plan_length,
+        cefr_level: cefr,
+        goals: payload.goals || [],
+        free_text_goal: payload.free_text_goal,
+        role: payload.role,
+        interests: payload.interests || [],
+        weak_terms: payload.weak_terms || [],
+        weak_skills: payload.weak_skills || [],
+      });
+      await loadCurrentPlan();
+      if (source === 'auto') {
+        setAutoPlanSummary(buildPlanSummary(payload));
+      } else {
+        setManualPlanSummary(buildPlanSummary(payload));
+      }
+    } catch (error) {
+      console.error('Plan generation failed', error);
+      setPlanError('Не удалось сгенерировать план. Проверьте сеть и ключ LLM.');
+    } finally {
+      setIsPlanGenerating(false);
+    }
+  };
 
   const getPageTitle = () => {
     switch (currentView) {
@@ -204,6 +460,24 @@ const App: React.FC = () => {
     }
   };
 
+
+  const firstPlanDay = learningPlan?.schedule?.[0];
+  const firstPlanTitle = firstPlanDay?.title || onboardingResult?.first_lesson?.topic || 'Персональный тренинг';
+  const firstPlanDescription = firstPlanDay?.steps?.length
+    ? firstPlanDay.steps.map((step) => step.title).slice(0, 3).join(' • ')
+    : (onboardingResult?.first_lesson?.description || 'Практика актуальных рабочих сценариев.');
+  const abbreviations = [
+    { term: 'RAG', description: 'Комбинация LLM с внешним поиском знаний.' },
+    { term: 'LLM', description: 'Большая языковая модель для генерации текста.' },
+    { term: 'NLP', description: 'Обработка естественного языка.' },
+    { term: 'MLOps', description: 'Практики внедрения и поддержки ML‑систем.' },
+    { term: 'CEFR', description: 'Европейская шкала уровня языка (A1–C2).' },
+    { term: 'CI/CD', description: 'Автоматизация сборки, тестов и релизов.' },
+    { term: 'API', description: 'Интерфейс взаимодействия между сервисами.' },
+    { term: 'SDK', description: 'Набор инструментов для разработки.' },
+  ];
+  const abbrIndex = new Date().getDate() % abbreviations.length;
+  const abbrOfDay = abbreviations[abbrIndex];
 
   const renderDashboard = () => (
     <div className="grid grid-cols-12 gap-8 animate-in fade-in duration-500 pb-24">
@@ -258,8 +532,8 @@ const App: React.FC = () => {
                <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
                <span className="text-[11px] font-black uppercase tracking-[0.25em] text-emerald-400">Next Sprint Ready</span>
             </div>
-            <h3 className="text-4xl font-black mb-6 tracking-tight leading-tight">Урок: {onboardingResult?.first_lesson?.topic || 'Персональный тренинг'}</h3>
-            <p className="opacity-70 text-xl mb-12 leading-relaxed font-medium">{onboardingResult?.first_lesson?.description || 'Практика актуальных рабочих сценариев.'}</p>
+            <h3 className="text-4xl font-black mb-6 tracking-tight leading-tight">Урок: {firstPlanTitle}</h3>
+            <p className="opacity-70 text-xl mb-12 leading-relaxed font-medium">{firstPlanDescription}</p>
             <button onClick={handleStartDaily} className="w-full sm:w-auto px-12 py-6 bg-blue-600 text-white rounded-[2rem] font-black text-2xl hover:bg-blue-700 transition-all shadow-2xl shadow-blue-600/40 flex items-center justify-center gap-4 active:scale-95 group">
               Начать занятие <i className="fa-solid fa-play group-hover:translate-x-1 transition-transform"></i>
             </button>
@@ -291,7 +565,6 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <AITerminology />
       </div>
 
       <div className="col-span-12 lg:col-span-4 space-y-10">
@@ -313,9 +586,9 @@ const App: React.FC = () => {
         <div className="bg-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group border border-slate-800">
           <div className="flex items-center gap-4 mb-10">
             <div className="w-12 h-12 bg-blue-500 rounded-[1.25rem] flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <i className="fa-solid fa-bolt-lightning text-lg"></i>
+              <i className="fa-solid fa-wand-magic-sparkles text-lg"></i>
             </div>
-            <h3 className="text-[11px] font-black uppercase tracking-[0.25em] text-blue-400">BuddyAgent Insights</h3>
+            <h3 className="text-[11px] font-black uppercase tracking-[0.25em] text-blue-400">Совет наставника</h3>
           </div>
           <div className="space-y-6">
             {!isOnline ? (
@@ -323,12 +596,31 @@ const App: React.FC = () => {
                   <i className="fa-solid fa-wifi-slash text-slate-500 mb-2"></i>
                   <p className="text-xs text-slate-400">Оффлайн: Аналитика недоступна</p>
               </div>
-            ) : insights.map((insight, idx) => (
-              <div key={idx} className="bg-slate-800/50 border border-slate-700/50 p-8 rounded-[2rem] hover:bg-slate-800/80 transition-all cursor-default group">
-                <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4 opacity-70 group-hover:opacity-100 transition-opacity">{insight.topic}</p>
-                <p className="text-sm text-slate-300 leading-relaxed font-bold">{insight.message}</p>
-              </div>
-            ))}
+            ) : (
+              <>
+                {insights
+                  .map((insight) => (typeof insight === 'string' ? insight : (insight?.message || insight?.topic || '')))
+                  .filter((text) => text)
+                  .slice(0, 2)
+                  .map((insightText, idx) => (
+                    <div key={idx} className="bg-slate-800/50 border border-slate-700/50 p-8 rounded-[2rem] hover:bg-slate-800/80 transition-all cursor-default group">
+                      <p className="text-sm text-slate-300 leading-relaxed font-bold">{insightText}</p>
+                    </div>
+                  ))}
+                <div className="bg-slate-800/50 border border-slate-700/50 p-8 rounded-[2rem]">
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4 opacity-70">Аббревиатура дня</p>
+                  <p className="text-sm text-slate-300 leading-relaxed font-bold">
+                    {abbrOfDay.term} — {abbrOfDay.description}
+                  </p>
+                </div>
+                <div className="bg-slate-800/50 border border-slate-700/50 p-8 rounded-[2rem]">
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-4 opacity-70">Мотивация</p>
+                  <p className="text-sm text-slate-300 leading-relaxed font-bold">
+                    Ты уже в процессе — это главное. Маленький шаг сегодня закрепит прогресс завтра.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -339,7 +631,7 @@ const App: React.FC = () => {
     switch (currentView) {
       case 'dashboard': return renderDashboard();
       case 'courses': return <CoursesView courses={courses} />;
-      case 'analytics': return <AnalyticsView skillData={skillTree} userName={user?.name || ''} />;
+      case 'analytics': return <AnalyticsView skillData={skillTree} userName={user?.name || ''} achievements={achievements} />;
       case 'achievements': return (
         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-500 pb-24">
           <h2 className="text-3xl font-black text-slate-900 tracking-tight">Зал славы</h2>
@@ -348,8 +640,27 @@ const App: React.FC = () => {
           </div>
         </div>
       );
-      case 'learning-plan': return <LearningPlanView plan={SAMPLE_PLAN} onAccept={() => setCurrentView('dashboard')} onNavigateAchievements={() => setCurrentView('achievements')} />;
-      case 'daily-session': return <DailySessionView onComplete={() => setCurrentView('dashboard')} />;
+      case 'learning-plan': return (
+        <LearningPlanView
+          plan={learningPlan}
+          onAccept={() => setCurrentView('dashboard')}
+          onNavigateAchievements={() => setCurrentView('achievements')}
+          onGenerate={(payload) => handleGeneratePlan(payload, 'manual')}
+          isGenerating={isPlanGenerating}
+          errorMessage={planError}
+          hasExistingPlan={Boolean(currentPlanMeta)}
+          progress={currentPlanMeta?.progress || null}
+          autoPlanSummary={autoPlanSummary}
+          manualPlanSummary={manualPlanSummary}
+        />
+      );
+      case 'daily-session': return (
+        <DailySessionView
+          onComplete={() => setCurrentView('dashboard')}
+          lessonTitle={firstPlanTitle}
+          lessonSteps={firstPlanDay?.steps?.map((step) => step.title) || []}
+        />
+      );
       case 'telegram': return <TelegramView />;
       case 'settings': return <SettingsView 
         onSave={(payload) => {

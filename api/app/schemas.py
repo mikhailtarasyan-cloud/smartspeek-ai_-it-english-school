@@ -149,3 +149,99 @@ class ProgressOut(BaseModel):
     courses: list[CourseOut]
     achievements: list[AchievementOut]
     total_attempts: int
+
+
+class LearningPlanGenerateRequest(BaseModel):
+    plan_length: Literal[7, 21]
+    cefr_level: Literal["A1", "A2", "B1", "B2", "C1"]
+    goals: list[str] = Field(default_factory=list)
+    free_text_goal: str | None = None
+    role: str | None = None
+    interests: list[str] = Field(default_factory=list)
+    weak_terms: list[str] = Field(default_factory=list)
+    weak_skills: list[str] = Field(default_factory=list)
+
+
+class LearningPlanGenerateResponse(BaseModel):
+    plan_id: str
+    version: int
+    status: Literal["active", "archived"]
+
+
+class LearningPlanLessonShort(BaseModel):
+    lesson_index: int
+    title: str
+    status: Literal["locked", "open", "done"]
+    lesson_payload: dict[str, Any] | None = None
+
+
+class LearningPlanProgress(BaseModel):
+    done: int
+    total: int
+
+
+class LearningPlanCurrentResponse(BaseModel):
+    plan_id: str
+    plan_length: int
+    cefr_level: str
+    persona: dict[str, Any] | None = None
+    progress: LearningPlanProgress
+    lessons: list[LearningPlanLessonShort]
+    version: int
+    status: Literal["active", "archived"]
+
+
+class LearningPlanLessonResponse(BaseModel):
+    plan_id: str
+    lesson_index: int
+    lesson_payload: dict[str, Any]
+
+
+class GlossaryTopicOut(BaseModel):
+    id: str
+    slug: str
+    title: str
+    description: str | None = None
+    skill_tag: str | None = None
+
+
+class GlossaryTopicStats(BaseModel):
+    topic_id: str
+    attempts: int
+    accuracy: float
+    best_streak: int
+
+
+class GameQuestionOut(BaseModel):
+    id: str
+    term: str
+    shown_definition: str
+    explanation: str
+    icon_key: str | None = None
+    order_index: int
+
+
+class GameSessionOut(BaseModel):
+    id: str
+    topic_id: str
+    status: Literal["active", "finished", "abandoned"]
+    n_questions: int
+    current_index: int
+    score_total: int
+    correct_count: int
+    wrong_count: int
+    streak_current: int
+    streak_max: int
+    attempt_no: int
+    current_question: GameQuestionOut | None = None
+
+
+class GameAnswerResponse(BaseModel):
+    is_correct: bool
+    score_delta: int
+    score_total: int
+    streak_current: int
+    streak_max: int
+    multiplier: float
+    explanation: str
+    correct_answer: bool

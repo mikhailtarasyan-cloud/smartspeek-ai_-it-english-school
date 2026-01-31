@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { DIAGNOSTIC_STEPS, ONBOARDING_QUESTIONS } from '../constants';
 import { evaluateDiagnosticResponse } from '../services/gemini';
 import { apiClient } from '../services/apiClient';
-import { LearningPlan, OnboardingData, Course, Lesson, Question, SkillNode } from '../types';
+import { Achievement, LearningPlan, OnboardingData, Course, Lesson, Question, SkillNode } from '../types';
 import CourseCard from './CourseCard';
 import AchievementBadge from './AchievementBadge';
 import SkillTree from './SkillTree';
@@ -265,6 +265,11 @@ export const OnboardingSurveyView: React.FC<{ onComplete: (data: OnboardingData)
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-8 tracking-tight leading-tight">
             {question.question}
           </h2>
+          {question.helper && (
+            <p className="text-xs md:text-sm text-slate-500 font-bold mb-6">
+              {question.helper}
+            </p>
+          )}
           <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
             <div className="h-full bg-blue-600 transition-all duration-700" style={{ width: `${progress}%` }}></div>
           </div>
@@ -687,7 +692,7 @@ const defaultSkillData: SkillNode = {
   ],
 };
 
-export const AnalyticsView: React.FC<{ skillData: SkillNode | null; userName?: string }> = ({ skillData, userName = '' }) => {
+export const AnalyticsView: React.FC<{ skillData: SkillNode | null; userName?: string; achievements: Achievement[] }> = ({ skillData, userName = '', achievements }) => {
   const [motivationalAdvice, setMotivationalAdvice] = useState<string>('');
   const [loadingAdvice, setLoadingAdvice] = useState(false);
   
@@ -706,7 +711,9 @@ export const AnalyticsView: React.FC<{ skillData: SkillNode | null; userName?: s
         
         const insights = await getTutorInsights(prompt);
         if (insights && insights.length > 0) {
-          setMotivationalAdvice(insights[0].message || '');
+          // insights теперь массив строк, а не объектов
+          const adviceText = Array.isArray(insights) ? insights[0] : (insights.message || insights);
+          setMotivationalAdvice(typeof adviceText === 'string' ? adviceText : '');
         } else {
           setMotivationalAdvice(`Твой уровень заметно подрос! Твоя уверенность в ${highestSkill.name} — это отличная база для следующего шага. Сфокусируйся на ${lowestSkill.name} для более сбалансированного прогресса.`);
         }
@@ -753,6 +760,20 @@ export const AnalyticsView: React.FC<{ skillData: SkillNode | null; userName?: s
                   );
                 })}
             </div>
+        </div>
+        <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm">
+          <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tight">Все награды</h3>
+          {achievements.length ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+              {achievements.map((ach) => (
+                <AchievementBadge key={ach.id} achievement={ach} allAchievements={achievements} />
+              ))}
+            </div>
+          ) : (
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-slate-500 font-bold">
+              Пока нет наград — начните с первого задания и откройте свой путь!
+            </div>
+          )}
         </div>
       </div>
       <div className="lg:col-span-5 space-y-10">
@@ -907,14 +928,60 @@ export const DiagnosticView: React.FC = () => (
     </div>
 );
 
+
 // --- Learning Plan View ---
 
-export const LearningPlanView: React.FC<{ plan: LearningPlan; onAccept: () => void; onNavigateAchievements: () => void }> = ({ plan, onAccept, onNavigateAchievements }) => {
-  const [isGenerating, setIsGenerating] = useState(false);
+export const LearningPlanView: React.FC<{
+  plan: LearningPlan;
+  onAccept: () => void;
+  onNavigateAchievements: () => void;
+  onGenerate: (payload: {
+    plan_length: 7 | 21;
+    goals: string[];
+    free_text_goal?: string;
+    role?: string;
+    interests: string[];
+  }) => void;
+  isGenerating: boolean;
+  errorMessage?: string | null;
+  hasExistingPlan?: boolean;
+  progress?: { done: number; total: number } | null;
+  autoPlanSummary?: string | null;
+  manualPlanSummary?: string | null;
+}> = ({ plan, onAccept, onNavigateAchievements, onGenerate, isGenerating, errorMessage, hasExistingPlan = false, progress = null, autoPlanSummary = null, manualPlanSummary = null }) => {
+  const [planLength, setPlanLength] = useState<7 | 21>(7);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [freeTextGoal, setFreeTextGoal] = useState('');
+  const [role, setRole] = useState('');
+  const [interests, setInterests] = useState('');
 
-  const handleGeneratePersonal = () => {
-    setIsGenerating(true);
-    setTimeout(() => setIsGenerating(false), 3000);
+  const goalOptions = [
+    { value: 'daily_standup', label: 'Стендапы' },
+    { value: 'incident_updates', label: 'Инциденты' },
+    { value: 'emails', label: 'Письма' },
+    { value: 'meetings', label: 'Митинги' },
+    { value: 'interview', label: 'Собеседование' },
+    { value: 'presentations', label: 'Презентации' },
+  ];
+
+  const toggleGoal = (value: string) => {
+    setSelectedGoals((prev) =>
+      prev.includes(value) ? prev.filter((g) => g !== value) : [...prev, value]
+    );
+  };
+
+  const handleGenerateClick = () => {
+    const interestsList = interests
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+    onGenerate({
+      plan_length: planLength,
+      goals: selectedGoals,
+      free_text_goal: freeTextGoal.trim() || undefined,
+      role: role.trim() || undefined,
+      interests: interestsList,
+    });
   };
 
   return (
@@ -930,29 +997,108 @@ export const LearningPlanView: React.FC<{ plan: LearningPlan; onAccept: () => vo
           <p className="text-slate-400 text-xl mb-12 max-w-2xl leading-relaxed font-medium">
             Нейро-оркестратор готов создать уникальные задания на основе ваших последних ошибок и текущих интересов в IT/AI.
           </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-300 mb-3">Длительность</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setPlanLength(7)}
+                  className={`px-4 py-2 rounded-xl text-sm font-black border ${planLength === 7 ? 'bg-blue-600 border-blue-400' : 'bg-white/5 border-white/10'}`}
+                >
+                  7 уроков
+                </button>
+                <button
+                  onClick={() => setPlanLength(21)}
+                  className={`px-4 py-2 rounded-xl text-sm font-black border ${planLength === 21 ? 'bg-blue-600 border-blue-400' : 'bg-white/5 border-white/10'}`}
+                >
+                  21 урок
+                </button>
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-300 mb-3">Роль</p>
+              <input
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm font-bold text-white placeholder:text-slate-400"
+                placeholder="DevOps / Backend / PM"
+              />
+            </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-300 mb-3">Цели</p>
+              <div className="flex flex-wrap gap-2">
+                {goalOptions.map((goal) => (
+                  <button
+                    key={goal.value}
+                    onClick={() => toggleGoal(goal.value)}
+                    className={`px-3 py-2 rounded-xl text-[11px] font-black border ${
+                      selectedGoals.includes(goal.value)
+                        ? 'bg-blue-600 border-blue-400'
+                        : 'bg-white/5 border-white/10'
+                    }`}
+                  >
+                    {goal.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-300 mb-3">Интересы</p>
+              <input
+                value={interests}
+                onChange={(e) => setInterests(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm font-bold text-white placeholder:text-slate-400"
+                placeholder="Kubernetes, LLM agents"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-300 mb-3">Цель своими словами</p>
+              <textarea
+                value={freeTextGoal}
+                onChange={(e) => setFreeTextGoal(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-white placeholder:text-slate-400 min-h-[80px]"
+                placeholder="I want to speak in meetings without fear."
+              />
+            </div>
+          </div>
           <div className="flex flex-wrap gap-5">
             <button 
-                onClick={handleGeneratePersonal}
+                onClick={handleGenerateClick}
                 disabled={isGenerating}
                 className="group px-12 py-6 bg-blue-600 text-white rounded-[2rem] font-black text-xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/30 active:scale-95 flex items-center gap-4"
             >
                 {isGenerating ? (
                 <>
-                    <i className="fa-solid fa-circle-notch animate-spin"></i> Синхронизация...
+                    <i className="fa-solid fa-circle-notch animate-spin"></i> Генерирую план...
                 </>
                 ) : (
                 <>
-                    <i className="fa-solid fa-bolt text-amber-400"></i> Сгенерировать урок
+                    <i className="fa-solid fa-bolt text-amber-400"></i> Сгенерировать план
                 </>
                 )}
             </button>
-            <button 
-                onClick={onNavigateAchievements}
-                className="px-12 py-6 bg-white/5 backdrop-blur-xl text-white border border-white/10 rounded-[2rem] font-black text-xl hover:bg-white/10 transition-all active:scale-95 flex items-center gap-4 group"
-            >
-                <i className="fa-solid fa-trophy text-amber-500 group-hover:scale-125 transition-transform"></i> Достижения
-            </button>
+            {hasExistingPlan ? (
+              <>
+                <button 
+                    onClick={onAccept}
+                    className="px-12 py-6 bg-white/5 backdrop-blur-xl text-white border border-white/10 rounded-[2rem] font-black text-xl hover:bg-white/10 transition-all active:scale-95 flex items-center gap-4 group"
+                >
+                    <i className="fa-solid fa-play text-emerald-400 group-hover:scale-125 transition-transform"></i> Continue
+                </button>
+                <button 
+                    onClick={handleGenerateClick}
+                    className="px-12 py-6 bg-white/5 backdrop-blur-xl text-white border border-white/10 rounded-[2rem] font-black text-xl hover:bg-white/10 transition-all active:scale-95 flex items-center gap-4 group"
+                >
+                    <i className="fa-solid fa-rotate text-amber-400 group-hover:scale-125 transition-transform"></i> Regenerate
+                </button>
+              </>
+            ) : null}
           </div>
+          {errorMessage ? (
+            <div className="mt-6 bg-amber-500/10 border border-amber-400/30 text-amber-200 rounded-2xl px-6 py-4 text-sm font-bold">
+              {errorMessage}
+            </div>
+          ) : null}
         </div>
         <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:rotate-12 transition-transform duration-1000">
            <i className="fa-solid fa-brain text-[20rem]"></i>
@@ -961,8 +1107,15 @@ export const LearningPlanView: React.FC<{ plan: LearningPlan; onAccept: () => vo
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-4">
           <div>
-              <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-4">Ваш учебный план (7 дней)</h2>
+              <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-4">
+                Ваш учебный план ({plan.duration_days} дней)
+              </h2>
               <p className="text-slate-500 text-xl font-bold leading-relaxed">Интенсивный путь к IT-свободе от оркестратора SmartSpeek.</p>
+              {progress ? (
+                <p className="text-slate-400 text-sm font-black uppercase tracking-widest mt-3">
+                  Прогресс: {progress.done}/{progress.total}
+                </p>
+              ) : null}
           </div>
           <button 
               onClick={onAccept}
@@ -972,42 +1125,69 @@ export const LearningPlanView: React.FC<{ plan: LearningPlan; onAccept: () => vo
           </button>
       </div>
 
+      {(autoPlanSummary || manualPlanSummary) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
+          {autoPlanSummary && (
+            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+              <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-2">Основной план</p>
+              <p className="text-sm text-slate-700 font-bold">{autoPlanSummary}</p>
+            </div>
+          )}
+          {manualPlanSummary && (
+            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+              <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-2">Доп. план</p>
+              <p className="text-sm text-slate-700 font-bold">{manualPlanSummary}</p>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plan.schedule.map(day => (
+          {plan.schedule.map((day, index) => (
               <div key={day.day} className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all group h-full flex flex-col">
                   <div className="flex justify-between items-center mb-8">
                       <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center text-2xl font-black shadow-inner">
-                          {day.day}
+                          {index + 1}
                       </div>
                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] group-hover:text-blue-500 transition-colors">День</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 mb-8 leading-tight flex-grow">{day.title}</h3>
                   <div className="space-y-4">
                       {day.steps.map(step => (
-                          <div key={step.id} className="flex items-center gap-5 p-4 bg-slate-50 rounded-2xl border border-transparent group-hover:border-blue-100/50 transition-all">
-                              <div className={`w-3 h-3 rounded-full shadow-sm ${step.status === 'current' ? 'bg-blue-500 animate-pulse ring-4 ring-blue-500/20' : 'bg-slate-300'}`}></div>
-                              <span className="text-sm font-black text-slate-700 tracking-tight">{step.title}</span>
+                          <div key={step.id} className="flex items-start gap-5 p-4 bg-slate-50 rounded-2xl border border-transparent group-hover:border-blue-100/50 transition-all">
+                              <div className={`mt-1 w-3 h-3 rounded-full shadow-sm ${step.status === 'current' ? 'bg-blue-500 animate-pulse ring-4 ring-blue-500/20' : 'bg-slate-300'}`}></div>
+                              <div className="flex-1">
+                                <span className="text-sm font-black text-slate-700 tracking-tight block">{step.title}</span>
+                                {step.explanation && (
+                                  <span className="text-[11px] text-slate-400 font-semibold block mt-2">{step.explanation}</span>
+                                )}
+                              </div>
                           </div>
                       ))}
                   </div>
               </div>
           ))}
       </div>
+
     </div>
   );
 };
 
 // --- Daily Session View ---
 
-export const DailySessionView: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
+export const DailySessionView: React.FC<{ onComplete: () => void; lessonTitle?: string; lessonSteps?: string[] }> = ({ onComplete, lessonTitle, lessonSteps }) => {
     const [step] = useState(1);
     const [answer, setAnswer] = useState('');
     const [feedback, setFeedback] = useState<any>(null);
     const [isEvaluating, setIsEvaluating] = useState(false);
 
+    const prompt = lessonTitle
+        ? `Сформулируйте короткий рабочий апдейт по теме: "${lessonTitle}".`
+        : 'Сформулируйте короткий рабочий апдейт по вашей теме дня.';
+
     const handleEvaluate = async () => {
         setIsEvaluating(true);
-        const result = await evaluateDiagnosticResponse('speaking', 'Опишите ваш последний рабочий день на английском.', answer);
+        const result = await evaluateDiagnosticResponse('speaking', prompt, answer);
         setFeedback(result);
         setIsEvaluating(false);
     };
@@ -1031,8 +1211,18 @@ export const DailySessionView: React.FC<{ onComplete: () => void }> = ({ onCompl
                 </div>
 
                 <div className="space-y-8 relative z-10">
-                    <div className="bg-slate-50 p-6 md:p-10 rounded-[2.5rem] border border-slate-100">
-                        <p className="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed italic">"Опишите ваш последний рабочий день на английском. Используйте не менее 3-х предложений."</p>
+                    <div className="bg-slate-50 p-6 md:p-10 rounded-[2.5rem] border border-slate-100 space-y-4">
+                        <p className="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed italic">"{prompt}"</p>
+                        {lessonSteps && lessonSteps.length > 0 && (
+                            <div className="text-sm text-slate-600 font-semibold">
+                                Тема дня:
+                                <ul className="list-disc pl-6 mt-2 space-y-1">
+                                    {lessonSteps.map((item, idx) => (
+                                        <li key={idx}>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
 
                     <textarea 

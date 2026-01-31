@@ -1,0 +1,2502 @@
+[
+  {
+    "term": "RAG",
+    "definition": "Retrieval-Augmented Generation — LLM with external knowledge retrieval.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "MLOps",
+    "definition": "Practices for deploying and maintaining ML systems.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "AI",
+    "definition": "Artificial Intelligence — systems that perform tasks requiring human-like intelligence.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "ML",
+    "definition": "Machine Learning — models that learn patterns from data.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "DL",
+    "definition": "Deep Learning — ML using multi-layer neural networks.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "NLP",
+    "definition": "Natural Language Processing — working with human language.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "LLM",
+    "definition": "Large Language Model — model trained on large text corpora.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Fine-tuning",
+    "definition": "Training a pre-trained model on specific data.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Prompt",
+    "definition": "Instruction or input guiding model output.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Embedding",
+    "definition": "Vector representation of text for similarity/search.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Token",
+    "definition": "Small unit of text processed by a model.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Transformer",
+    "definition": "Neural architecture using attention mechanisms.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Attention",
+    "definition": "Mechanism focusing on relevant parts of input.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "CNN",
+    "definition": "Convolutional Neural Network for images.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "RNN",
+    "definition": "Recurrent Neural Network for sequences.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "GRU",
+    "definition": "Gated Recurrent Unit — RNN variant.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "LSTM",
+    "definition": "Long Short-Term Memory — RNN variant.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "GAN",
+    "definition": "Generative Adversarial Network.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "VAE",
+    "definition": "Variational Autoencoder.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Diffusion Model",
+    "definition": "Generative model based on diffusion process.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "RL",
+    "definition": "Reinforcement Learning — learning by reward.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Policy",
+    "definition": "Strategy in RL.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Reward",
+    "definition": "Signal guiding RL optimization.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Overfitting",
+    "definition": "Model fits noise rather than signal.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Underfitting",
+    "definition": "Model too simple to capture patterns.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Bias",
+    "definition": "Systematic error in model predictions.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Variance",
+    "definition": "Sensitivity to data fluctuations.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Precision",
+    "definition": "Correct positive predictions ratio.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Recall",
+    "definition": "True positives found ratio.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "F1-score",
+    "definition": "Harmonic mean of precision and recall.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "ROC-AUC",
+    "definition": "Metric for classification performance.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Confusion Matrix",
+    "definition": "Table of classification results.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Feature",
+    "definition": "Input variable used by a model.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Feature Engineering",
+    "definition": "Creating useful features from data.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Normalization",
+    "definition": "Scaling data to a common range.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Standardization",
+    "definition": "Scaling data to zero mean, unit variance.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Gradient Descent",
+    "definition": "Optimization algorithm for minimizing loss.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Loss Function",
+    "definition": "Measure of prediction error.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Backpropagation",
+    "definition": "Algorithm to compute gradients.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Learning Rate",
+    "definition": "Step size in optimization.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Epoch",
+    "definition": "One pass over training data.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Batch",
+    "definition": "Subset of data for training step.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Inference",
+    "definition": "Using model to make predictions.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Serving",
+    "definition": "Deploying model for inference.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Context Window",
+    "definition": "Max tokens a model can process at once.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Standup Update",
+    "definition": "Common IT work activity or communication pattern: Standup Update.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Incident Update",
+    "definition": "Common IT work activity or communication pattern: Incident Update.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Postmortem",
+    "definition": "Common IT work activity or communication pattern: Postmortem.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "On-call",
+    "definition": "Common IT work activity or communication pattern: On-call.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Root Cause Analysis",
+    "definition": "Common IT work activity or communication pattern: Root Cause Analysis.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "PR Review",
+    "definition": "Common IT work activity or communication pattern: PR Review.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Code Review",
+    "definition": "Common IT work activity or communication pattern: Code Review.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Design Doc",
+    "definition": "Common IT work activity or communication pattern: Design Doc.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Architecture Review",
+    "definition": "Common IT work activity or communication pattern: Architecture Review.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Sprint Planning",
+    "definition": "Common IT work activity or communication pattern: Sprint Planning.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Retrospective",
+    "definition": "Common IT work activity or communication pattern: Retrospective.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Backlog Refinement",
+    "definition": "Common IT work activity or communication pattern: Backlog Refinement.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "SLA",
+    "definition": "Common IT work activity or communication pattern: SLA.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "SLO",
+    "definition": "Common IT work activity or communication pattern: SLO.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "SLI",
+    "definition": "Common IT work activity or communication pattern: SLI.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "MTTR",
+    "definition": "Common IT work activity or communication pattern: MTTR.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "MTBF",
+    "definition": "Common IT work activity or communication pattern: MTBF.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Python",
+    "definition": "Programming language used in software development: Python.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "JavaScript",
+    "definition": "Programming language used in software development: JavaScript.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "TypeScript",
+    "definition": "Programming language used in software development: TypeScript.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Java",
+    "definition": "Programming language used in software development: Java.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Go",
+    "definition": "Programming language used in software development: Go.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Rust",
+    "definition": "Programming language used in software development: Rust.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "C",
+    "definition": "Programming language used in software development: C.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "C++",
+    "definition": "Programming language used in software development: C++.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "C#",
+    "definition": "Programming language used in software development: C#.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Kotlin",
+    "definition": "Programming language used in software development: Kotlin.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Swift",
+    "definition": "Programming language used in software development: Swift.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Ruby",
+    "definition": "Programming language used in software development: Ruby.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "PHP",
+    "definition": "Programming language used in software development: PHP.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Scala",
+    "definition": "Programming language used in software development: Scala.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "R",
+    "definition": "Programming language used in software development: R.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Julia",
+    "definition": "Programming language used in software development: Julia.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Bash",
+    "definition": "Programming language used in software development: Bash.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "SQL",
+    "definition": "Programming language used in software development: SQL.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Dart",
+    "definition": "Programming language used in software development: Dart.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Elixir",
+    "definition": "Programming language used in software development: Elixir.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Lua",
+    "definition": "Programming language used in software development: Lua.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Perl",
+    "definition": "Programming language used in software development: Perl.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Haskell",
+    "definition": "Programming language used in software development: Haskell.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Clojure",
+    "definition": "Programming language used in software development: Clojure.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Erlang",
+    "definition": "Programming language used in software development: Erlang.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Objective-C",
+    "definition": "Programming language used in software development: Objective-C.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Shell",
+    "definition": "Programming language used in software development: Shell.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "PowerShell",
+    "definition": "Programming language used in software development: PowerShell.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "React",
+    "definition": "Framework or library commonly used in development: React.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Vue",
+    "definition": "Framework or library commonly used in development: Vue.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Angular",
+    "definition": "Framework or library commonly used in development: Angular.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Svelte",
+    "definition": "Framework or library commonly used in development: Svelte.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Next.js",
+    "definition": "Framework or library commonly used in development: Next.js.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Nuxt",
+    "definition": "Framework or library commonly used in development: Nuxt.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Express",
+    "definition": "Framework or library commonly used in development: Express.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "FastAPI",
+    "definition": "Framework or library commonly used in development: FastAPI.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Django",
+    "definition": "Framework or library commonly used in development: Django.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Flask",
+    "definition": "Framework or library commonly used in development: Flask.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Spring",
+    "definition": "Framework or library commonly used in development: Spring.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "NestJS",
+    "definition": "Framework or library commonly used in development: NestJS.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Laravel",
+    "definition": "Framework or library commonly used in development: Laravel.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Rails",
+    "definition": "Framework or library commonly used in development: Rails.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "ASP.NET",
+    "definition": "Framework or library commonly used in development: ASP.NET.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Gin",
+    "definition": "Framework or library commonly used in development: Gin.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Fiber",
+    "definition": "Framework or library commonly used in development: Fiber.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Ktor",
+    "definition": "Framework or library commonly used in development: Ktor.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Phoenix",
+    "definition": "Framework or library commonly used in development: Phoenix.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Hapi",
+    "definition": "Framework or library commonly used in development: Hapi.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Tailwind CSS",
+    "definition": "Framework or library commonly used in development: Tailwind CSS.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Bootstrap",
+    "definition": "Framework or library commonly used in development: Bootstrap.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Material UI",
+    "definition": "Framework or library commonly used in development: Material UI.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "D3.js",
+    "definition": "Framework or library commonly used in development: D3.js.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Redux",
+    "definition": "Framework or library commonly used in development: Redux.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Zustand",
+    "definition": "Framework or library commonly used in development: Zustand.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "MobX",
+    "definition": "Framework or library commonly used in development: MobX.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "RxJS",
+    "definition": "Framework or library commonly used in development: RxJS.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Vuex",
+    "definition": "Framework or library commonly used in development: Vuex.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Pinia",
+    "definition": "Framework or library commonly used in development: Pinia.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "React Query",
+    "definition": "Framework or library commonly used in development: React Query.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "TanStack Query",
+    "definition": "Framework or library commonly used in development: TanStack Query.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Apollo Client",
+    "definition": "Framework or library commonly used in development: Apollo Client.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "GraphQL Yoga",
+    "definition": "Framework or library commonly used in development: GraphQL Yoga.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "tRPC",
+    "definition": "Framework or library commonly used in development: tRPC.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "PostgreSQL",
+    "definition": "Database or storage technology: PostgreSQL.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "MySQL",
+    "definition": "Database or storage technology: MySQL.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "SQLite",
+    "definition": "Database or storage technology: SQLite.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "MongoDB",
+    "definition": "Database or storage technology: MongoDB.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Redis",
+    "definition": "Database or storage technology: Redis.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Elasticsearch",
+    "definition": "Database or storage technology: Elasticsearch.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Cassandra",
+    "definition": "Database or storage technology: Cassandra.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "DynamoDB",
+    "definition": "Database or storage technology: DynamoDB.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "BigQuery",
+    "definition": "Database or storage technology: BigQuery.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Snowflake",
+    "definition": "Database or storage technology: Snowflake.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "S3",
+    "definition": "Database or storage technology: S3.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "GCS",
+    "definition": "Database or storage technology: GCS.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Blob Storage",
+    "definition": "Database or storage technology: Blob Storage.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Kafka",
+    "definition": "Database or storage technology: Kafka.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "RabbitMQ",
+    "definition": "Database or storage technology: RabbitMQ.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "NATS",
+    "definition": "Database or storage technology: NATS.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "ClickHouse",
+    "definition": "Database or storage technology: ClickHouse.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Neo4j",
+    "definition": "Database or storage technology: Neo4j.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "InfluxDB",
+    "definition": "Database or storage technology: InfluxDB.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "TimescaleDB",
+    "definition": "Database or storage technology: TimescaleDB.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "MariaDB",
+    "definition": "Database or storage technology: MariaDB.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Aurora",
+    "definition": "Database or storage technology: Aurora.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Firestore",
+    "definition": "Database or storage technology: Firestore.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Cloud SQL",
+    "definition": "Database or storage technology: Cloud SQL.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Cosmos DB",
+    "definition": "Database or storage technology: Cosmos DB.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "CouchDB",
+    "definition": "Database or storage technology: CouchDB.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "RocksDB",
+    "definition": "Database or storage technology: RocksDB.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "LevelDB",
+    "definition": "Database or storage technology: LevelDB.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "AWS",
+    "definition": "Cloud service or platform component: AWS.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "GCP",
+    "definition": "Cloud service or platform component: GCP.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Azure",
+    "definition": "Cloud service or platform component: Azure.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "EC2",
+    "definition": "Cloud service or platform component: EC2.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Lambda",
+    "definition": "Cloud service or platform component: Lambda.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "RDS",
+    "definition": "Cloud service or platform component: RDS.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "EKS",
+    "definition": "Cloud service or platform component: EKS.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "ECS",
+    "definition": "Cloud service or platform component: ECS.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "CloudFront",
+    "definition": "Cloud service or platform component: CloudFront.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "IAM",
+    "definition": "Cloud service or platform component: IAM.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "VPC",
+    "definition": "Cloud service or platform component: VPC.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Route 53",
+    "definition": "Cloud service or platform component: Route 53.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "CloudWatch",
+    "definition": "Cloud service or platform component: CloudWatch.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "SQS",
+    "definition": "Cloud service or platform component: SQS.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "SNS",
+    "definition": "Cloud service or platform component: SNS.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "API Gateway",
+    "definition": "Cloud service or platform component: API Gateway.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Fargate",
+    "definition": "Cloud service or platform component: Fargate.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "CloudFormation",
+    "definition": "Cloud service or platform component: CloudFormation.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "GKE",
+    "definition": "Cloud service or platform component: GKE.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "GCE",
+    "definition": "Cloud service or platform component: GCE.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Cloud Run",
+    "definition": "Cloud service or platform component: Cloud Run.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Cloud Functions",
+    "definition": "Cloud service or platform component: Cloud Functions.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Pub/Sub",
+    "definition": "Cloud service or platform component: Pub/Sub.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Cloud Storage",
+    "definition": "Cloud service or platform component: Cloud Storage.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Cloud IAM",
+    "definition": "Cloud service or platform component: Cloud IAM.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Cloud CDN",
+    "definition": "Cloud service or platform component: Cloud CDN.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "AKS",
+    "definition": "Cloud service or platform component: AKS.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "App Service",
+    "definition": "Cloud service or platform component: App Service.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Azure Functions",
+    "definition": "Cloud service or platform component: Azure Functions.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Azure SQL",
+    "definition": "Cloud service or platform component: Azure SQL.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Event Grid",
+    "definition": "Cloud service or platform component: Event Grid.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Key Vault",
+    "definition": "Cloud service or platform component: Key Vault.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Azure DevOps",
+    "definition": "Cloud service or platform component: Azure DevOps.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Azure Monitor",
+    "definition": "Cloud service or platform component: Azure Monitor.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "App Gateway",
+    "definition": "Cloud service or platform component: App Gateway.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Cloud DNS",
+    "definition": "Cloud service or platform component: Cloud DNS.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Cloud NAT",
+    "definition": "Cloud service or platform component: Cloud NAT.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Cloud Armor",
+    "definition": "Cloud service or platform component: Cloud Armor.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Docker",
+    "definition": "DevOps tool or practice: Docker.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Kubernetes",
+    "definition": "DevOps tool or practice: Kubernetes.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Helm",
+    "definition": "DevOps tool or practice: Helm.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Terraform",
+    "definition": "DevOps tool or practice: Terraform.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Ansible",
+    "definition": "DevOps tool or practice: Ansible.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Packer",
+    "definition": "DevOps tool or practice: Packer.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Jenkins",
+    "definition": "DevOps tool or practice: Jenkins.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "GitHub Actions",
+    "definition": "DevOps tool or practice: GitHub Actions.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "GitLab CI",
+    "definition": "DevOps tool or practice: GitLab CI.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "CircleCI",
+    "definition": "DevOps tool or practice: CircleCI.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "ArgoCD",
+    "definition": "DevOps tool or practice: ArgoCD.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Flux",
+    "definition": "DevOps tool or practice: Flux.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Prometheus",
+    "definition": "DevOps tool or practice: Prometheus.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Grafana",
+    "definition": "DevOps tool or practice: Grafana.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Jaeger",
+    "definition": "DevOps tool or practice: Jaeger.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "OpenTelemetry",
+    "definition": "DevOps tool or practice: OpenTelemetry.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "ELK",
+    "definition": "DevOps tool or practice: ELK.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Datadog",
+    "definition": "DevOps tool or practice: Datadog.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "New Relic",
+    "definition": "DevOps tool or practice: New Relic.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Sentry",
+    "definition": "DevOps tool or practice: Sentry.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Kustomize",
+    "definition": "DevOps tool or practice: Kustomize.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Tekton",
+    "definition": "DevOps tool or practice: Tekton.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Spinnaker",
+    "definition": "DevOps tool or practice: Spinnaker.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Buildkite",
+    "definition": "DevOps tool or practice: Buildkite.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "SonarQube",
+    "definition": "DevOps tool or practice: SonarQube.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Trivy",
+    "definition": "DevOps tool or practice: Trivy.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Falco",
+    "definition": "DevOps tool or practice: Falco.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "OAuth2",
+    "definition": "Security concept or control: OAuth2.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "OIDC",
+    "definition": "Security concept or control: OIDC.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "JWT",
+    "definition": "Security concept or control: JWT.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "TLS",
+    "definition": "Security concept or control: TLS.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "mTLS",
+    "definition": "Security concept or control: mTLS.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "CORS",
+    "definition": "Security concept or control: CORS.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "CSRF",
+    "definition": "Security concept or control: CSRF.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "XSS",
+    "definition": "Security concept or control: XSS.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "SQL Injection",
+    "definition": "Security concept or control: SQL Injection.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "WAF",
+    "definition": "Security concept or control: WAF.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Zero Trust",
+    "definition": "Security concept or control: Zero Trust.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "SIEM",
+    "definition": "Security concept or control: SIEM.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "SOC",
+    "definition": "Security concept or control: SOC.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "MFA",
+    "definition": "Security concept or control: MFA.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "RBAC",
+    "definition": "Security concept or control: RBAC.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "ABAC",
+    "definition": "Security concept or control: ABAC.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Secrets Manager",
+    "definition": "Security concept or control: Secrets Manager.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "KMS",
+    "definition": "Security concept or control: KMS.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "HSM",
+    "definition": "Security concept or control: HSM.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "OWASP",
+    "definition": "Security concept or control: OWASP.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "CVE",
+    "definition": "Security concept or control: CVE.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "CSP",
+    "definition": "Security concept or control: CSP.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "SSO",
+    "definition": "Security concept or control: SSO.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "SAML",
+    "definition": "Security concept or control: SAML.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "PKI",
+    "definition": "Security concept or control: PKI.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Encryption",
+    "definition": "Security concept or control: Encryption.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Hashing",
+    "definition": "Security concept or control: Hashing.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Salting",
+    "definition": "Security concept or control: Salting.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "HTTP",
+    "definition": "Networking or API protocol: HTTP.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "HTTPS",
+    "definition": "Networking or API protocol: HTTPS.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "TCP",
+    "definition": "Networking or API protocol: TCP.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "UDP",
+    "definition": "Networking or API protocol: UDP.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "DNS",
+    "definition": "Networking or API protocol: DNS.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "CDN",
+    "definition": "Networking or API protocol: CDN.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Load Balancer",
+    "definition": "Networking or API protocol: Load Balancer.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Reverse Proxy",
+    "definition": "Networking or API protocol: Reverse Proxy.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Gateway",
+    "definition": "Networking or API protocol: Gateway.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "NAT",
+    "definition": "Networking or API protocol: NAT.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "IPv4",
+    "definition": "Networking or API protocol: IPv4.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "IPv6",
+    "definition": "Networking or API protocol: IPv6.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "gRPC",
+    "definition": "Networking or API protocol: gRPC.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "WebSocket",
+    "definition": "Networking or API protocol: WebSocket.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "REST",
+    "definition": "Networking or API protocol: REST.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "GraphQL",
+    "definition": "Networking or API protocol: GraphQL.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "RPC",
+    "definition": "Networking or API protocol: RPC.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "SOAP",
+    "definition": "Networking or API protocol: SOAP.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "QUIC",
+    "definition": "Networking or API protocol: QUIC.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "MQTT",
+    "definition": "Networking or API protocol: MQTT.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "AMQP",
+    "definition": "Networking or API protocol: AMQP.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "RTMP",
+    "definition": "Networking or API protocol: RTMP.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "WebRTC",
+    "definition": "Networking or API protocol: WebRTC.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "SSE",
+    "definition": "Networking or API protocol: SSE.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Proxy",
+    "definition": "Networking or API protocol: Proxy.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Firewall",
+    "definition": "Networking or API protocol: Firewall.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "DHCP",
+    "definition": "Networking or API protocol: DHCP.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "BGP",
+    "definition": "Networking or API protocol: BGP.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "VLAN",
+    "definition": "Networking or API protocol: VLAN.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "ETL",
+    "definition": "Data engineering or analytics term: ETL.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "ELT",
+    "definition": "Data engineering or analytics term: ELT.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Data Lake",
+    "definition": "Data engineering or analytics term: Data Lake.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Data Warehouse",
+    "definition": "Data engineering or analytics term: Data Warehouse.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Data Pipeline",
+    "definition": "Data engineering or analytics term: Data Pipeline.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Airflow",
+    "definition": "Data engineering or analytics term: Airflow.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "dbt",
+    "definition": "Data engineering or analytics term: dbt.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Apache Spark",
+    "definition": "Data engineering or analytics term: Apache Spark.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Hadoop",
+    "definition": "Data engineering or analytics term: Hadoop.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Flink",
+    "definition": "Data engineering or analytics term: Flink.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Feature Store",
+    "definition": "Data engineering or analytics term: Feature Store.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Data Catalog",
+    "definition": "Data engineering or analytics term: Data Catalog.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Data Lineage",
+    "definition": "Data engineering or analytics term: Data Lineage.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Data Quality",
+    "definition": "Data engineering or analytics term: Data Quality.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "A/B Testing",
+    "definition": "Data engineering or analytics term: A/B Testing.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Experiment Tracking",
+    "definition": "Data engineering or analytics term: Experiment Tracking.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "MLflow",
+    "definition": "Data engineering or analytics term: MLflow.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Looker",
+    "definition": "Data engineering or analytics term: Looker.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Tableau",
+    "definition": "Data engineering or analytics term: Tableau.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Power BI",
+    "definition": "Data engineering or analytics term: Power BI.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Superset",
+    "definition": "Data engineering or analytics term: Superset.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Kibana",
+    "definition": "Data engineering or analytics term: Kibana.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Metabase",
+    "definition": "Data engineering or analytics term: Metabase.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "API",
+    "definition": "IT term used in engineering practice: API.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "SDK",
+    "definition": "IT term used in engineering practice: SDK.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "CLI",
+    "definition": "IT term used in engineering practice: CLI.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "IDE",
+    "definition": "IT term used in engineering practice: IDE.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Monolith",
+    "definition": "IT term used in engineering practice: Monolith.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Microservices",
+    "definition": "IT term used in engineering practice: Microservices.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Serverless",
+    "definition": "IT term used in engineering practice: Serverless.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Scalability",
+    "definition": "IT term used in engineering practice: Scalability.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Availability",
+    "definition": "IT term used in engineering practice: Availability.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Reliability",
+    "definition": "IT term used in engineering practice: Reliability.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Latency",
+    "definition": "IT term used in engineering practice: Latency.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Throughput",
+    "definition": "IT term used in engineering practice: Throughput.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Caching",
+    "definition": "IT term used in engineering practice: Caching.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Rate Limiting",
+    "definition": "IT term used in engineering practice: Rate Limiting.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Idempotency",
+    "definition": "IT term used in engineering practice: Idempotency.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Versioning",
+    "definition": "IT term used in engineering practice: Versioning.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Backward Compatibility",
+    "definition": "IT term used in engineering practice: Backward Compatibility.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Code Smell",
+    "definition": "IT term used in engineering practice: Code Smell.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Refactor",
+    "definition": "IT term used in engineering practice: Refactor.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Unit Test",
+    "definition": "IT term used in engineering practice: Unit Test.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Integration Test",
+    "definition": "IT term used in engineering practice: Integration Test.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "E2E Test",
+    "definition": "IT term used in engineering practice: E2E Test.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Mock",
+    "definition": "IT term used in engineering practice: Mock.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Stub",
+    "definition": "IT term used in engineering practice: Stub.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Feature Flag",
+    "definition": "IT term used in engineering practice: Feature Flag.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Canary Release",
+    "definition": "IT term used in engineering practice: Canary Release.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Blue-Green Deployment",
+    "definition": "IT term used in engineering practice: Blue-Green Deployment.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Rollback",
+    "definition": "IT term used in engineering practice: Rollback.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Observability",
+    "definition": "IT term used in engineering practice: Observability.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Logging",
+    "definition": "IT term used in engineering practice: Logging.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Tracing",
+    "definition": "IT term used in engineering practice: Tracing.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Metrics",
+    "definition": "IT term used in engineering practice: Metrics.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Alerting",
+    "definition": "IT term used in engineering practice: Alerting.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Incident Management",
+    "definition": "IT term used in engineering practice: Incident Management.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "SRE",
+    "definition": "IT term used in engineering practice: SRE.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "DevSecOps",
+    "definition": "IT term used in engineering practice: DevSecOps.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "CI/CD",
+    "definition": "IT term used in engineering practice: CI/CD.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "IaC",
+    "definition": "IT term used in engineering practice: IaC.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Secrets",
+    "definition": "IT term used in engineering practice: Secrets.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Configuration",
+    "definition": "IT term used in engineering practice: Configuration.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Dependency",
+    "definition": "IT term used in engineering practice: Dependency.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Package Manager",
+    "definition": "IT term used in engineering practice: Package Manager.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Runtime",
+    "definition": "IT term used in engineering practice: Runtime.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Container",
+    "definition": "IT term used in engineering practice: Container.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Pod",
+    "definition": "IT term used in engineering practice: Pod.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Namespace",
+    "definition": "IT term used in engineering practice: Namespace.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Deployment",
+    "definition": "IT term used in engineering practice: Deployment.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Service Mesh",
+    "definition": "IT term used in engineering practice: Service Mesh.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Sidecar",
+    "definition": "IT term used in engineering practice: Sidecar.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Ingress",
+    "definition": "IT term used in engineering practice: Ingress.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Egress",
+    "definition": "IT term used in engineering practice: Egress.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Service Discovery",
+    "definition": "IT term used in engineering practice: Service Discovery.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Feature Toggle",
+    "definition": "IT term used in engineering practice: Feature Toggle.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "SemVer",
+    "definition": "IT term used in engineering practice: SemVer.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Changelog",
+    "definition": "IT term used in engineering practice: Changelog.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Release Notes",
+    "definition": "IT term used in engineering practice: Release Notes.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Hotfix",
+    "definition": "IT term used in engineering practice: Hotfix.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Tech Debt",
+    "definition": "IT term used in engineering practice: Tech Debt.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Code Coverage",
+    "definition": "IT term used in engineering practice: Code Coverage.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Nginx",
+    "definition": "Tool or library commonly used in AI/IT: Nginx.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Apache",
+    "definition": "Tool or library commonly used in AI/IT: Apache.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Istio",
+    "definition": "Tool or library commonly used in AI/IT: Istio.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Linkerd",
+    "definition": "Tool or library commonly used in AI/IT: Linkerd.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Envoy",
+    "definition": "Tool or library commonly used in AI/IT: Envoy.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Consul",
+    "definition": "Tool or library commonly used in AI/IT: Consul.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Vault",
+    "definition": "Tool or library commonly used in AI/IT: Vault.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Nomad",
+    "definition": "Tool or library commonly used in AI/IT: Nomad.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Jira",
+    "definition": "Tool or library commonly used in AI/IT: Jira.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Confluence",
+    "definition": "Tool or library commonly used in AI/IT: Confluence.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Notion",
+    "definition": "Tool or library commonly used in AI/IT: Notion.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Slack",
+    "definition": "Tool or library commonly used in AI/IT: Slack.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Teams",
+    "definition": "Tool or library commonly used in AI/IT: Teams.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Zoom",
+    "definition": "Tool or library commonly used in AI/IT: Zoom.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Figma",
+    "definition": "Tool or library commonly used in AI/IT: Figma.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Postman",
+    "definition": "Tool or library commonly used in AI/IT: Postman.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Insomnia",
+    "definition": "Tool or library commonly used in AI/IT: Insomnia.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Swagger",
+    "definition": "Tool or library commonly used in AI/IT: Swagger.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "OpenAPI",
+    "definition": "Tool or library commonly used in AI/IT: OpenAPI.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Kong",
+    "definition": "Tool or library commonly used in AI/IT: Kong.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Traefik",
+    "definition": "Tool or library commonly used in AI/IT: Traefik.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "HAProxy",
+    "definition": "Tool or library commonly used in AI/IT: HAProxy.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Redis Streams",
+    "definition": "Tool or library commonly used in AI/IT: Redis Streams.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Kafka Streams",
+    "definition": "Tool or library commonly used in AI/IT: Kafka Streams.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "RabbitMQ Exchanges",
+    "definition": "Tool or library commonly used in AI/IT: RabbitMQ Exchanges.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Celery",
+    "definition": "Tool or library commonly used in AI/IT: Celery.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Sidekiq",
+    "definition": "Tool or library commonly used in AI/IT: Sidekiq.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Pydantic",
+    "definition": "Tool or library commonly used in AI/IT: Pydantic.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "SQLAlchemy",
+    "definition": "Tool or library commonly used in AI/IT: SQLAlchemy.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Alembic",
+    "definition": "Tool or library commonly used in AI/IT: Alembic.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Pandas",
+    "definition": "Tool or library commonly used in AI/IT: Pandas.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "NumPy",
+    "definition": "Tool or library commonly used in AI/IT: NumPy.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "SciPy",
+    "definition": "Tool or library commonly used in AI/IT: SciPy.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "PyTorch",
+    "definition": "Tool or library commonly used in AI/IT: PyTorch.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "TensorFlow",
+    "definition": "Tool or library commonly used in AI/IT: TensorFlow.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Keras",
+    "definition": "Tool or library commonly used in AI/IT: Keras.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Scikit-learn",
+    "definition": "Tool or library commonly used in AI/IT: Scikit-learn.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "XGBoost",
+    "definition": "Tool or library commonly used in AI/IT: XGBoost.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "LightGBM",
+    "definition": "Tool or library commonly used in AI/IT: LightGBM.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "CatBoost",
+    "definition": "Tool or library commonly used in AI/IT: CatBoost.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "ONNX",
+    "definition": "Tool or library commonly used in AI/IT: ONNX.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "CUDA",
+    "definition": "Tool or library commonly used in AI/IT: CUDA.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "cuDNN",
+    "definition": "Tool or library commonly used in AI/IT: cuDNN.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "OpenCV",
+    "definition": "Tool or library commonly used in AI/IT: OpenCV.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Hugging Face",
+    "definition": "Tool or library commonly used in AI/IT: Hugging Face.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "LangChain",
+    "definition": "Tool or library commonly used in AI/IT: LangChain.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "LlamaIndex",
+    "definition": "Tool or library commonly used in AI/IT: LlamaIndex.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "FAISS",
+    "definition": "Tool or library commonly used in AI/IT: FAISS.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Pinecone",
+    "definition": "Tool or library commonly used in AI/IT: Pinecone.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Weaviate",
+    "definition": "Tool or library commonly used in AI/IT: Weaviate.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Milvus",
+    "definition": "Tool or library commonly used in AI/IT: Milvus.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Chroma",
+    "definition": "Tool or library commonly used in AI/IT: Chroma.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Qdrant",
+    "definition": "Tool or library commonly used in AI/IT: Qdrant.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "BERT",
+    "definition": "Tool or library commonly used in AI/IT: BERT.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "GPT",
+    "definition": "Tool or library commonly used in AI/IT: GPT.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "T5",
+    "definition": "Tool or library commonly used in AI/IT: T5.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "RoBERTa",
+    "definition": "Tool or library commonly used in AI/IT: RoBERTa.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "ALB",
+    "definition": "Tool or library commonly used in AI/IT: ALB.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "NLB",
+    "definition": "Tool or library commonly used in AI/IT: NLB.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "ELB",
+    "definition": "Tool or library commonly used in AI/IT: ELB.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "CloudTrail",
+    "definition": "Tool or library commonly used in AI/IT: CloudTrail.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "GuardDuty",
+    "definition": "Tool or library commonly used in AI/IT: GuardDuty.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Macie",
+    "definition": "Tool or library commonly used in AI/IT: Macie.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Athena",
+    "definition": "Tool or library commonly used in AI/IT: Athena.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Glue",
+    "definition": "Tool or library commonly used in AI/IT: Glue.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Redshift",
+    "definition": "Tool or library commonly used in AI/IT: Redshift.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Kinesis",
+    "definition": "Tool or library commonly used in AI/IT: Kinesis.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "ReplicaSet",
+    "definition": "Kubernetes concept or resource: ReplicaSet.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "StatefulSet",
+    "definition": "Kubernetes concept or resource: StatefulSet.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "DaemonSet",
+    "definition": "Kubernetes concept or resource: DaemonSet.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "ConfigMap",
+    "definition": "Kubernetes concept or resource: ConfigMap.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "Secret",
+    "definition": "Kubernetes concept or resource: Secret.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Horizontal Pod Autoscaler",
+    "definition": "Kubernetes concept or resource: Horizontal Pod Autoscaler.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Pod Disruption Budget",
+    "definition": "Kubernetes concept or resource: Pod Disruption Budget.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Node Pool",
+    "definition": "Kubernetes concept or resource: Node Pool.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Cluster Autoscaler",
+    "definition": "Kubernetes concept or resource: Cluster Autoscaler.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Ingress Controller",
+    "definition": "Kubernetes concept or resource: Ingress Controller.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "ServiceAccount",
+    "definition": "Kubernetes concept or resource: ServiceAccount.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "AWS SageMaker",
+    "definition": "Cloud service: AWS SageMaker.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "AWS Glue",
+    "definition": "Cloud service: AWS Glue.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "AWS Athena",
+    "definition": "Cloud service: AWS Athena.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "AWS Redshift",
+    "definition": "Cloud service: AWS Redshift.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "AWS Kinesis",
+    "definition": "Cloud service: AWS Kinesis.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "AWS CloudTrail",
+    "definition": "Cloud service: AWS CloudTrail.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "AWS GuardDuty",
+    "definition": "Cloud service: AWS GuardDuty.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "AWS EBS",
+    "definition": "Cloud service: AWS EBS.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "AWS EFS",
+    "definition": "Cloud service: AWS EFS.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "AWS ECS",
+    "definition": "Cloud service: AWS ECS.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "AWS Batch",
+    "definition": "Cloud service: AWS Batch.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "AWS Step Functions",
+    "definition": "Cloud service: AWS Step Functions.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "AWS CodeBuild",
+    "definition": "Cloud service: AWS CodeBuild.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "AWS CodePipeline",
+    "definition": "Cloud service: AWS CodePipeline.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "GCP Vertex AI",
+    "definition": "Cloud service: GCP Vertex AI.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "GCP Dataflow",
+    "definition": "Cloud service: GCP Dataflow.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "GCP Dataproc",
+    "definition": "Cloud service: GCP Dataproc.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "GCP Bigtable",
+    "definition": "Cloud service: GCP Bigtable.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "GCP Cloud SQL",
+    "definition": "Cloud service: GCP Cloud SQL.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "GCP Cloud Spanner",
+    "definition": "Cloud service: GCP Cloud Spanner.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "GCP Cloud Build",
+    "definition": "Cloud service: GCP Cloud Build.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "GCP Cloud Scheduler",
+    "definition": "Cloud service: GCP Cloud Scheduler.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "GCP Secret Manager",
+    "definition": "Cloud service: GCP Secret Manager.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "GCP Artifact Registry",
+    "definition": "Cloud service: GCP Artifact Registry.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Azure Kubernetes Service",
+    "definition": "Cloud service: Azure Kubernetes Service.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "Azure Data Factory",
+    "definition": "Cloud service: Azure Data Factory.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Azure Synapse",
+    "definition": "Cloud service: Azure Synapse.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "Azure Service Bus",
+    "definition": "Cloud service: Azure Service Bus.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "Azure Container Registry",
+    "definition": "Cloud service: Azure Container Registry.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Azure ML",
+    "definition": "Cloud service: Azure ML.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Azure Logic Apps",
+    "definition": "Cloud service: Azure Logic Apps.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Azure Storage Queue",
+    "definition": "Cloud service: Azure Storage Queue.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Azure Table Storage",
+    "definition": "Cloud service: Azure Table Storage.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "JSON",
+    "definition": "Standard or format used in IT: JSON.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "YAML",
+    "definition": "Standard or format used in IT: YAML.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "XML",
+    "definition": "Standard or format used in IT: XML.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Protobuf",
+    "definition": "Standard or format used in IT: Protobuf.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "Avro",
+    "definition": "Standard or format used in IT: Avro.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Parquet",
+    "definition": "Standard or format used in IT: Parquet.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "ORC",
+    "definition": "Standard or format used in IT: ORC.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "gRPC-Web",
+    "definition": "Standard or format used in IT: gRPC-Web.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "S3 API",
+    "definition": "Standard or format used in IT: S3 API.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "POSIX",
+    "definition": "Standard or format used in IT: POSIX.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "FIDO2",
+    "definition": "Standard or format used in IT: FIDO2.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "WebAuthn",
+    "definition": "Standard or format used in IT: WebAuthn.",
+    "icon": "fa-key"
+  },
+  {
+    "term": "LDAP",
+    "definition": "Standard or format used in IT: LDAP.",
+    "icon": "fa-brain"
+  },
+  {
+    "term": "Kerberos",
+    "definition": "Standard or format used in IT: Kerberos.",
+    "icon": "fa-robot"
+  },
+  {
+    "term": "OAuth",
+    "definition": "Standard or format used in IT: OAuth.",
+    "icon": "fa-microchip"
+  },
+  {
+    "term": "SHA-256",
+    "definition": "Standard or format used in IT: SHA-256.",
+    "icon": "fa-database"
+  },
+  {
+    "term": "Terraform Cloud",
+    "definition": "Platform or tool used in IT: Terraform Cloud.",
+    "icon": "fa-cloud"
+  },
+  {
+    "term": "Pulumi",
+    "definition": "Platform or tool used in IT: Pulumi.",
+    "icon": "fa-network-wired"
+  },
+  {
+    "term": "Chef",
+    "definition": "Platform or tool used in IT: Chef.",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "term": "Puppet",
+    "definition": "Platform or tool used in IT: Puppet.",
+    "icon": "fa-code"
+  },
+  {
+    "term": "SaltStack",
+    "definition": "Platform or tool used in IT: SaltStack.",
+    "icon": "fa-terminal"
+  },
+  {
+    "term": "Vagrant",
+    "definition": "Platform or tool used in IT: Vagrant.",
+    "icon": "fa-gear"
+  },
+  {
+    "term": "Minikube",
+    "definition": "Platform or tool used in IT: Minikube.",
+    "icon": "fa-cubes"
+  },
+  {
+    "term": "Kind",
+    "definition": "Platform or tool used in IT: Kind.",
+    "icon": "fa-chart-line"
+  },
+  {
+    "term": "K3s",
+    "definition": "Platform or tool used in IT: K3s.",
+    "icon": "fa-sitemap"
+  },
+  {
+    "term": "Rancher",
+    "definition": "Platform or tool used in IT: Rancher.",
+    "icon": "fa-bolt"
+  },
+  {
+    "term": "Cloudflare",
+    "definition": "Platform or tool used in IT: Cloudflare.",
+    "icon": "fa-wrench"
+  },
+  {
+    "term": "Fastly",
+    "definition": "Platform or tool used in IT: Fastly.",
+    "icon": "fa-diagram-project"
+  },
+  {
+    "term": "Akamai",
+    "definition": "Platform or tool used in IT: Akamai.",
+    "icon": "fa-layer-group"
+  },
+  {
+    "term": "Netlify",
+    "definition": "Platform or tool used in IT: Netlify.",
+    "icon": "fa-server"
+  },
+  {
+    "term": "Vercel",
+    "definition": "Platform or tool used in IT: Vercel.",
+    "icon": "fa-lock"
+  },
+  {
+    "term": "Supabase",
+    "definition": "Platform or tool used in IT: Supabase.",
+    "icon": "fa-key"
+  }
+]

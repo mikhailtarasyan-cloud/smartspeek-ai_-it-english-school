@@ -146,13 +146,14 @@ def get_lesson(
         options = item.get("options", [])
         correct_index = item.get("correctIndex", 0)
         correct_answer = options[correct_index] if options else ""
+        explanation = item.get("explanation") or f"Правильный ответ: {correct_answer}."
         questions.append(
             QuestionOut(
                 id=f"{lesson.id}_q{idx + 1}",
                 text=item.get("question", ""),
                 options=options,
                 correctAnswer=correct_answer,
-                explanation="Разбор появится после выбора ответа.",
+                explanation=explanation,
             )
         )
 
