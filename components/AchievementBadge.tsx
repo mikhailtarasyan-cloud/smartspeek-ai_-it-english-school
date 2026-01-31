@@ -11,28 +11,6 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({ achievement, allAch
   const tier = achievement.tier;
   const achievementsList = allAchievements.length ? allAchievements : [achievement];
 
-  // Determine visibility level:
-  // 1. Unlocked: Full color
-  // 2. Next 5 Locked: Slightly visible with padlock
-  // 3. Others: Blurred/hidden
-  
-  const unlockedCount = achievementsList.filter(a => a.status === 'unlocked').length;
-  const currentIndex = achievementsList.findIndex(a => a.id === achievement.id);
-  
-  // Logic: Unlocked are always visible. Next 5 after the last unlocked are "reachable".
-  const lastUnlockedIndex = achievementsList.reduce((acc, a, idx) => a.status === 'unlocked' ? idx : acc, -1);
-  const isReachable = currentIndex > lastUnlockedIndex && currentIndex <= lastUnlockedIndex + 5;
-  const isHidden = currentIndex > lastUnlockedIndex + 5;
-
-  if (isHidden && isLocked) {
-    return (
-        <div className="relative flex flex-col items-center p-5 rounded-[2rem] border border-slate-100 bg-slate-50 opacity-20 blur-sm pointer-events-none">
-            <div className="w-16 h-16 rounded-[1.5rem] bg-slate-200 mb-4"></div>
-            <div className="w-full h-2 bg-slate-200 rounded"></div>
-        </div>
-    );
-  }
-
   // Tier-specific colors
   const getTierStyles = () => {
     if (isLocked) return 'bg-white border-slate-100 opacity-60 grayscale';

@@ -1,7 +1,10 @@
+from pathlib import Path
+from uuid import uuid4
+import json
 from sqlalchemy.orm import Session
 
 from .db import SessionLocal
-from .models import User, UserProfile, Course, Lesson, Achievement
+from .models import User, UserProfile, Course, Lesson, Achievement, GlossaryTopic, GlossaryTerm
 
 
 COURSE_SEED = [
@@ -49,6 +52,15 @@ COURSE_SEED = [
         "level": "advanced",
         "color": "#ef4444",
         "icon": "fa-robot",
+    },
+    {
+        "id": "course_system_design",
+        "title": "System Design & Architecture",
+        "description": "Архитектура сервисов, масштабирование и надежность.",
+        "domain": "architecture",
+        "level": "intermediate",
+        "color": "#0ea5e9",
+        "icon": "fa-diagram-project",
     },
 ]
 
@@ -283,6 +295,26 @@ ACHIEVEMENTS_SEED = [
         "icon": "fa-stars",
         "type": "skill",
         "rule_json": {"all_skills_b1": True},
+    },
+    {
+        "id": "ach_streak_30",
+        "code": "streak_30",
+        "title": "30 Days Streak",
+        "description": "30 дней подряд обучения.",
+        "tier": 3,
+        "icon": "fa-calendar-days",
+        "type": "streak",
+        "rule_json": {"days_streak": 30},
+    },
+    {
+        "id": "ach_sprints_50",
+        "code": "sprints_50",
+        "title": "Sprint Generator",
+        "description": "50 сгенерированных спринтов.",
+        "tier": 3,
+        "icon": "fa-rocket",
+        "type": "skill",
+        "rule_json": {"sprints_generated": 50},
     },
 ]
 
@@ -548,17 +580,596 @@ ABBREVIATIONS_QUESTIONS = {
     ]
 }
 
+# Вопросы для курса по AI Products & LLMs
+LLM_PRODUCTS_QUESTIONS = [
+    {
+        "question": "Что означает LLM и где она применяется?",
+        "options": [
+            "Large Language Model — генерация текста, чат-боты, суммаризация",
+            "Low Latency Module — ускорение сетей",
+            "Local Logic Machine — локальная база данных",
+            "Language Learning Method — метод изучения языка"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Зачем нужен prompt в LLM?",
+        "options": [
+            "Чтобы задать задачу и формат ответа модели",
+            "Чтобы увеличить скорость интернета",
+            "Чтобы сохранить лог в базе",
+            "Чтобы заменить API"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Context Window?",
+        "options": [
+            "Максимальное число токенов, которое модель видит за раз",
+            "Размер окна браузера",
+            "Время ответа сервера",
+            "Память GPU"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что делает температура (temperature) в LLM?",
+        "options": [
+            "Управляет разнообразием/креативностью ответа",
+            "Увеличивает длину контекста",
+            "Снижает цену вызова",
+            "Уменьшает задержку сети"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое RAG?",
+        "options": [
+            "Комбинация LLM с внешним поиском знаний",
+            "Метод сжатия изображений",
+            "Протокол для API",
+            "Инструмент мониторинга"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Зачем нужны embeddings?",
+        "options": [
+            "Для поиска похожих текстов и семантического поиска",
+            "Для хранения секретов",
+            "Для запуска контейнеров",
+            "Для шифрования трафика"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает top_p?",
+        "options": [
+            "Порог вероятности для выборки токенов (nucleus sampling)",
+            "Максимальная длина ответа",
+            "Количество параллельных запросов",
+            "Уровень доступа пользователя"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Как обычно оценивают качество LLM‑ответов?",
+        "options": [
+            "Через метрики + human review + тест‑наборы",
+            "Только по скорости",
+            "Только по длине",
+            "Только по цене"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое hallucination у LLM?",
+        "options": [
+            "Правдоподобный, но неверный ответ модели",
+            "Ошибки сети",
+            "Сбой базы данных",
+            "Поломка UI"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Зачем нужен Guard/фильтр вывода?",
+        "options": [
+            "Чтобы блокировать утечки, токсичность и небезопасный контент",
+            "Чтобы ускорить рендер",
+            "Чтобы хранить кэш",
+            "Чтобы заменить логику"
+        ],
+        "correctIndex": 0
+    }
+]
+
+# Вопросы для курса по DevOps & Infrastructure
+DEVOPS_QUESTIONS = [
+    {
+        "question": "Что такое CI?",
+        "options": [
+            "Continuous Integration — частые интеграции кода с автоматическими тестами",
+            "Central Interface — интерфейс админа",
+            "Cloud Instance — облачная машина",
+            "Code Injection — уязвимость"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает CD в DevOps?",
+        "options": [
+            "Continuous Delivery/Deployment — автоматическая доставка/релиз",
+            "Central Database",
+            "Console Driver",
+            "Critical Downtime"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Для чего нужен Docker?",
+        "options": [
+            "Упаковка приложения и зависимостей в контейнер",
+            "Хранение данных",
+            "Мониторинг",
+            "Логирование"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Kubernetes?",
+        "options": [
+            "Оркестратор контейнеров",
+            "Система контроля версий",
+            "Язык программирования",
+            "База данных"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает SLA?",
+        "options": [
+            "Service Level Agreement",
+            "Server Load Average",
+            "System Log Archive",
+            "Secure Login Access"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое SLO?",
+        "options": [
+            "Service Level Objective",
+            "System Load Output",
+            "Secure Login Option",
+            "Server Log Overview"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Incident Postmortem?",
+        "options": [
+            "Разбор инцидента с причинами и улучшениями",
+            "Резервная копия",
+            "План релиза",
+            "Обновление зависимостей"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает MTTR?",
+        "options": [
+            "Mean Time To Recovery",
+            "Maximum Time To Release",
+            "Mean Test To Report",
+            "Monthly Time Tracking"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое IaC?",
+        "options": [
+            "Infrastructure as Code",
+            "Interface as Code",
+            "Internal Access Control",
+            "Incident and Compliance"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Как называется подход \"работает у меня\"?",
+        "options": [
+            "Проблема окружений; решается контейнеризацией",
+            "Blue-green deployment",
+            "Canary release",
+            "Zero-downtime"
+        ],
+        "correctIndex": 0
+    }
+]
+
+# Вопросы для курса Agile & Scrum
+AGILE_QUESTIONS = [
+    {
+        "question": "Что такое Sprint в Scrum?",
+        "options": [
+            "Фиксированный цикл разработки (обычно 1–2 недели)",
+            "Встреча после релиза",
+            "Список багов",
+            "Тип тестирования"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Daily Standup — это:",
+        "options": [
+            "Короткий ежедневный синк команды",
+            "Длинная презентация прогресса",
+            "Ретроспектива",
+            "Планирование релиза"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Product Backlog содержит:",
+        "options": [
+            "Список задач и требований к продукту",
+            "Только баги",
+            "Список сотрудников",
+            "Кодовую базу"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Scrum Master отвечает за:",
+        "options": [
+            "Процесс Scrum и устранение блокеров",
+            "Техническую архитектуру",
+            "Финансы",
+            "Дизайн"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Definition of Done?",
+        "options": [
+            "Критерии завершённости задачи",
+            "Список задач спринта",
+            "Отчёт о релизе",
+            "Документ требований"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Retrospective проводится чтобы:",
+        "options": [
+            "Улучшить процесс команды",
+            "Сделать демо клиенту",
+            "Написать тесты",
+            "Провести onboarding"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "User Story обычно содержит:",
+        "options": [
+            "Как <роль>, я хочу <цель>, чтобы <ценность>",
+            "Только техническое описание",
+            "Финансовые метрики",
+            "Дорожную карту"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Story Points — это:",
+        "options": [
+            "Относительная оценка сложности",
+            "Часы работы",
+            "Количество багов",
+            "Число участников"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Sprint Review — это:",
+        "options": [
+            "Демо результата спринта стейкхолдерам",
+            "Внутреннее тестирование",
+            "Технический аудит",
+            "Планирование"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Kanban‑WIP limit?",
+        "options": [
+            "Ограничение числа задач в работе",
+            "Список багов",
+            "План релиза",
+            "Чеклист тестов"
+        ],
+        "correctIndex": 0
+    }
+]
+
+# Вопросы для курса Product & Business
+PRODUCT_QUESTIONS = [
+    {
+        "question": "Что такое North Star Metric?",
+        "options": [
+            "Ключевая метрика ценности продукта",
+            "Количество багов",
+            "Скорость разработки",
+            "Размер команды"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает PMF?",
+        "options": [
+            "Product-Market Fit — соответствие продукта рынку",
+            "Project Management Framework",
+            "Performance Monitoring Function",
+            "Product Metrics Forecast"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое LTV?",
+        "options": [
+            "Lifetime Value — суммарная ценность клиента",
+            "Last Time Visit",
+            "Lead Tracking Value",
+            "Latency Time Value"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое CAC?",
+        "options": [
+            "Customer Acquisition Cost — стоимость привлечения клиента",
+            "Critical Alert Count",
+            "Content Approval Cycle",
+            "Customer Activity Chart"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Conversion Rate?",
+        "options": [
+            "Доля пользователей, совершивших целевое действие",
+            "Скорость загрузки",
+            "Число ошибок",
+            "Время отклика"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает MVP?",
+        "options": [
+            "Minimum Viable Product — минимально жизнеспособный продукт",
+            "Most Valuable Product",
+            "Main Version Plan",
+            "Market Value Projection"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое A/B тест?",
+        "options": [
+            "Эксперимент сравнения двух вариантов",
+            "Тип безопасности",
+            "Архитектурный паттерн",
+            "Вид отчёта"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое KPI?",
+        "options": [
+            "Key Performance Indicator — ключевой показатель",
+            "Known Product Issue",
+            "Kernel Process Index",
+            "Knowledge Product Insight"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Retention — это:",
+        "options": [
+            "Удержание пользователей во времени",
+            "Привлечение трафика",
+            "Скорость выдачи",
+            "Количество релизов"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое Churn?",
+        "options": [
+            "Отток пользователей",
+            "Рост пользователей",
+            "Время отклика",
+            "Нагрузка на сервер"
+        ],
+        "correctIndex": 0
+    }
+]
+
+# Вопросы для курса System Design & Architecture
+SYSTEM_DESIGN_QUESTIONS = [
+    {
+        "question": "Что означает scalability?",
+        "options": [
+            "Способность системы расти по нагрузке",
+            "Скорость интернета",
+            "Количество багов",
+            "Тип базы данных"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое load balancer?",
+        "options": [
+            "Компонент, распределяющий трафик между серверами",
+            "Инструмент логирования",
+            "База данных",
+            "Сервис очередей"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое latency?",
+        "options": [
+            "Задержка ответа системы",
+            "Объем данных",
+            "Количество серверов",
+            "Стоимость запроса"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое cache?",
+        "options": [
+            "Быстрое хранилище для ускорения ответа",
+            "Резервная копия",
+            "Лог ошибок",
+            "Система мониторинга"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что означает availability?",
+        "options": [
+            "Доля времени, когда сервис доступен",
+            "Скорость доставки",
+            "Размер команды",
+            "Сложность кода"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое single point of failure?",
+        "options": [
+            "Компонент, падение которого ломает систему",
+            "Нормальная часть архитектуры",
+            "Временная метрика",
+            "Блокировка в базе"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое database replication?",
+        "options": [
+            "Копирование данных на несколько узлов",
+            "Удаление дубликатов",
+            "Шифрование данных",
+            "Сжатие данных"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое sharding?",
+        "options": [
+            "Разделение данных по нескольким базам",
+            "Сжатие логов",
+            "Проверка прав",
+            "Сбор метрик"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое eventual consistency?",
+        "options": [
+            "Данные становятся согласованными со временем",
+            "Мгновенная согласованность",
+            "Тип авторизации",
+            "Сетевой протокол"
+        ],
+        "correctIndex": 0
+    },
+    {
+        "question": "Что такое throughput?",
+        "options": [
+            "Количество запросов, обработанных за время",
+            "Скорость интерфейса",
+            "Время простоя",
+            "Размер базы"
+        ],
+        "correctIndex": 0
+    }
+]
+
+COURSE_QUESTION_BANK = {
+    "course_llm": LLM_PRODUCTS_QUESTIONS,
+    "course_devops": DEVOPS_QUESTIONS,
+    "course_agile": AGILE_QUESTIONS,
+    "course_product": PRODUCT_QUESTIONS,
+    "course_system_design": SYSTEM_DESIGN_QUESTIONS,
+}
+
+GLOSSARY_TOPICS = [
+    {"id": "topic_ai_core", "slug": "ai-core", "title": "AI Core", "description": "Базовые AI/ML термины", "skill_tag": "ai"},
+    {"id": "topic_llm", "slug": "llm", "title": "LLM & Prompting", "description": "LLM, промптинг и RAG", "skill_tag": "ai"},
+    {"id": "topic_devops", "slug": "devops", "title": "DevOps & Infra", "description": "Инфраструктура и DevOps", "skill_tag": "devops"},
+    {"id": "topic_product", "slug": "product", "title": "Product & Business", "description": "Метрики и продуктовые термины", "skill_tag": "product"},
+    {"id": "topic_security", "slug": "security", "title": "Security", "description": "Безопасность и контроль доступа", "skill_tag": "security"},
+]
+
+
+def _pick_topic(term: str) -> str:
+    term_lower = term.lower()
+    if any(k in term_lower for k in ["llm", "rag", "prompt", "embedding", "transformer", "gpt", "bert"]):
+        return "topic_llm"
+    if any(k in term_lower for k in ["devops", "kubernetes", "docker", "ci", "cd", "kafka", "prometheus", "grafana"]):
+        return "topic_devops"
+    if any(k in term_lower for k in ["metric", "kpi", "ltv", "cac", "retention", "churn", "mvp"]):
+        return "topic_product"
+    if any(k in term_lower for k in ["security", "oauth", "jwt", "tls", "cors", "xss", "csrf", "iam"]):
+        return "topic_security"
+    return "topic_ai_core"
+
+
+def _load_glossary_terms() -> list[dict]:
+    root = Path(__file__).resolve().parents[2]
+    glossary_path = root / "data" / "ai_it_terms.json"
+    if glossary_path.exists():
+        return json.loads(glossary_path.read_text(encoding="utf-8"))
+    return []
+
 def _build_questions(course_title: str, index: int) -> dict:
+    correct = f"{course_title} Option A{index}"
     return {
         "question": f"{course_title}: Вопрос {index}. Что означает термин?",
         "options": [
-            f"{course_title} Option A{index}",
+            correct,
             f"{course_title} Option B{index}",
             f"{course_title} Option C{index}",
             f"{course_title} Option D{index}",
         ],
         "correctIndex": 0,
+        "explanation": f"Правильный ответ: {correct}.",
     }
+
+
+def _ensure_explanations(questions: list[dict]) -> list[dict]:
+    for q in questions:
+        if "explanation" not in q or not q["explanation"]:
+            options = q.get("options") or []
+            idx = q.get("correctIndex", 0)
+            correct = options[idx] if options and idx < len(options) else ""
+            q["explanation"] = f"Правильный ответ: {correct}." if correct else "Правильный ответ указан в вариантах."
+    return questions
+
+
+def _expand_bank(questions: list[dict], total: int) -> list[dict]:
+    if not questions:
+        return []
+    expanded: list[dict] = []
+    for i in range(total):
+        q = dict(questions[i % len(questions)])
+        expanded.append(q)
+    return expanded
 
 
 def seed():
@@ -586,7 +1197,7 @@ def seed():
             for course in COURSE_SEED:
                 # Для курса по аббревиатурам используем готовые вопросы
                 if course["id"] == "course_core_ai" and course["id"] in ABBREVIATIONS_QUESTIONS:
-                    questions = ABBREVIATIONS_QUESTIONS[course["id"]]
+                    questions = _ensure_explanations(ABBREVIATIONS_QUESTIONS[course["id"]])
                     # Разбиваем на 5 уроков по 10 вопросов
                     for lesson_num in range(1, 6):
                         lesson_questions = questions[(lesson_num - 1) * 10:lesson_num * 10]
@@ -612,13 +1223,34 @@ def seed():
                                 content_json=content_json,
                             )
                         )
-                else:
-                    # Для остальных курсов генерируем вопросы
-                    for i in range(1, 11):
+                elif course["id"] in COURSE_QUESTION_BANK:
+                    bank = _ensure_explanations(COURSE_QUESTION_BANK[course["id"]])
+                    questions = _expand_bank(bank, 50)
+                    for i in range(1, 6):
                         lesson_id = f"{course['id']}_lesson_{i}"
+                        lesson_questions = questions[(i - 1) * 10:i * 10]
                         content_json = {
                             "type": "mcq",
-                            "items": [_build_questions(course["title"], i)]
+                            "items": lesson_questions
+                        }
+                        db.add(
+                            Lesson(
+                                id=lesson_id,
+                                course_id=course["id"],
+                                title=f"{course['title']} — MCQ {i}",
+                                order_index=i,
+                                type="quiz",
+                                content_json=content_json,
+                            )
+                        )
+                else:
+                    # Для остальных курсов генерируем вопросы
+                    for i in range(1, 6):
+                        lesson_id = f"{course['id']}_lesson_{i}"
+                        lesson_questions = [_build_questions(course["title"], (i - 1) * 10 + j + 1) for j in range(10)]
+                        content_json = {
+                            "type": "mcq",
+                            "items": lesson_questions
                         }
                         db.add(
                             Lesson(
@@ -634,6 +1266,24 @@ def seed():
         if db.query(Achievement).count() == 0:
             for achievement in ACHIEVEMENTS_SEED:
                 db.add(Achievement(**achievement))
+
+        if db.query(GlossaryTopic).count() == 0:
+            for topic in GLOSSARY_TOPICS:
+                db.add(GlossaryTopic(**topic))
+
+        if db.query(GlossaryTerm).count() == 0:
+            terms = _load_glossary_terms()
+            for item in terms:
+                db.add(
+                    GlossaryTerm(
+                        id=str(uuid4()),
+                        topic_id=_pick_topic(item.get("term", "")),
+                        term=item.get("term", ""),
+                        definition=item.get("definition", ""),
+                        difficulty=None,
+                        tags=None,
+                    )
+                )
 
         db.commit()
     finally:
