@@ -68,7 +68,7 @@ git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
 git add .gitignore
 
 # Добавить только исходный код (НЕ .venv, НЕ .db)
-git add .dockerignore README.md GITHUB_SETUP.md GITHUB_CHECK.md TODO.md FIX_GITHUB.md
+git add .dockerignore README.md GITHUB_SETUP.md TODO.md FIX_GITHUB.md
 git add package.json package-lock.json tsconfig.json vite.config.ts
 git add index.html index.tsx App.tsx
 git add components/ services/ types.ts constants.ts metadata.json
